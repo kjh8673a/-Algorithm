@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
@@ -10,7 +8,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
 
         int t = Integer.parseInt(st.nextToken());
 
@@ -32,13 +30,12 @@ public class Main {
             for (int j = 0; j < m; j++) {
                 int check = Integer.parseInt(st.nextToken());
                 int ans = binarySearch(arr, 0, arr.length - 1, check);
-                bw.write(String.valueOf(ans));
-                bw.newLine();
+                sb.append(String.valueOf(ans));
+                sb.append("\n");
             }
-            
-            bw.flush();
 
         }
+        System.out.println(sb.toString());
 
     }
 
