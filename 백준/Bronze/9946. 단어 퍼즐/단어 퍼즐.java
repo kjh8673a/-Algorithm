@@ -15,6 +15,7 @@ public class Main {
             
             if(a.equals("END") && b.equals("END")) break;
 
+            // 글자 길이가 다르다면 정렬할 것도 없이 바로 스킵
             if(a.length() != b.length()) {
                 sb.append("Case " + idx + ": different");
                 System.out.println(sb.toString());
@@ -26,9 +27,10 @@ public class Main {
             int[] arrB = new int[b.length()];
             int maxA = Integer.MIN_VALUE;
             int maxB = Integer.MIN_VALUE;
+            // 카운팅정렬을 하기 위해서 한글자씩 숫자로 바꿔서 배열에 넣어준다
             for(int i = 0; i < a.length(); i++) {
-                arrA[i] = a.toUpperCase().charAt(i)-65;
-                arrB[i] = b.toUpperCase().charAt(i)-65;
+                arrA[i] = a.charAt(i)-97;
+                arrB[i] = b.charAt(i)-97;
                 maxA = Math.max(maxA, arrA[i]);
                 maxB = Math.max(maxB, arrB[i]);
             }
@@ -60,6 +62,7 @@ public class Main {
                 resultB[countingB[arrB[i]]] = arrB[i];
             }
 
+            // 처음부터 끝까지 같은지 체크
             boolean check = true;
             for(int i = 0; i < resultA.length; i++) {
                 if(resultA[i] != resultB[i]) {
