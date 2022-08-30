@@ -17,7 +17,6 @@ public class Main {
             palin[i]++;
         }
         for(int i = 0; i < 10000; i++) {
-            
             int num = reverse(i);
             if(num < 100000001) {
                 palin[num]++;
@@ -53,28 +52,6 @@ public class Main {
                 return false;
             }
         }
-        return true;
-    }
-
-    public static boolean isPalin(int x) {
-        String str = String.valueOf(x);
-        String a;
-        if(str.length() % 2 == 0) {
-            a = str.substring(0, str.length()/2);
-        }else {
-            a = str.substring(0, str.length()/2 + 1);
-        }
-        
-        String b = str.substring(str.length()/2);
-
-        int len = a.length();
-        
-        for(int i = len-1; i >= 0; i--) {
-            if(a.charAt(i) != b.charAt((len-1)-i)) {
-                return false;
-            }
-        }
-
         return true;
     }
 
