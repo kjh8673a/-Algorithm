@@ -3,37 +3,33 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        int t = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
 
-        for(int i = 0; i < t; i ++) {
-            String s = br.readLine();
-
-            sb.setLength(0);
-            String a = "";
-            for(int j = 0; j < s.length(); j++) {
-                if(s.charAt(j) == ' ') {
-                    for(int k = a.length()-1; k >= 0; k--) {
-                        sb.append(a.charAt(k));
-                    }
-                    sb.append(" ");
-                    a = "";
-                }else {
-                    a += s.charAt(j);
+        for(int i = 0; i < n; i++) {
+            String str = br.readLine();
+            String tmp = "";
+            for(int j = 0; j < str.length(); j++) {
+                if(str.charAt(j) == ' ') {
+                    StringBuilder sbr = new StringBuilder(tmp);
+                    sb.append(sbr.reverse().toString()).append(" ");
+                    tmp = "";
+                    continue;
                 }
-
-                if(j == s.length()-1) {
-                    for(int k = a.length()-1; k >= 0; k--) {
-                        sb.append(a.charAt(k));
-                    }
+                if(j == str.length()-1) {
+                    tmp += str.charAt(j);
+                    StringBuilder sbr = new StringBuilder(tmp);
+                    sb.append(sbr.reverse().toString()).append("\n");
                 }
+                tmp += str.charAt(j);
             }
-            System.out.println(sb.toString());
         }
-        
+
+        System.out.println(sb.toString());
+
     }
 
 }
