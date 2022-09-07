@@ -17,14 +17,14 @@ public class Main {
 		int e = Integer.parseInt(st.nextToken());
 		int f = Integer.parseInt(st.nextToken());
 
-		for (int x = -999; x <= 999; x++) {
-			for (int y = -999; y <= 999; y++) {
-				if (a * x + b * y == c && d * x + e * y == f) {
-					System.out.println(x + " " + y);
-					break;
-				}
-			}
-		}
+		double delta = (a * e) - (b * d);
+		double deltaX = (c * e) - (b * f);
+		double deltaY = (a * f) - (c * d);
+
+		int x = (int) (deltaX / delta);
+		int y = (int) (deltaY / delta);
+
+		System.out.println(x + " " + y);
 
 	}
 
