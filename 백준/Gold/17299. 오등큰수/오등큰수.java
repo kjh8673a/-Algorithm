@@ -8,17 +8,16 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(br.readLine());
-		int[] numbers = new int[n];
+		int[] arr = new int[n];
         int[] count = new int[1000001];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
         for(int i = 0; i < n; i++) {
             int num = Integer.parseInt(st.nextToken());
-            numbers[i] = num;
+            arr[i] = num;
             count[num]++;
         }
 
-        int[] ans = new int[n];
         int[] stack = new int[n];
         int top = -1;
         for(int i = 0; i < n; i++) {
@@ -29,8 +28,8 @@ public class Main {
              * 해당 인덱스의 값을 현재 원소로 바꿔준다
              */
 
-            while(top != -1 && count[numbers[stack[top]]] < count[numbers[i]]) {
-                ans[stack[top]] = numbers[i];
+            while(top != -1 && count[arr[stack[top]]] < count[arr[i]]) {
+                arr[stack[top]] = arr[i];
                 top--;
             }
             top++;
@@ -42,12 +41,12 @@ public class Main {
          * 스택의 모든 원소를 인덱스로하는 배열의 값을 -1로 초기화한다
          */
         for(int i = top; i >= 0; i--) {
-            ans[stack[i]] = -1;
+            arr[stack[i]] = -1;
         }
 
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < ans.length; i++) {
-            sb.append(ans[i] + " ");            
+        for(int i = 0; i < arr.length; i++) {
+            sb.append(arr[i] + " ");            
         }
 
         System.out.println(sb);
