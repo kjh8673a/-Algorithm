@@ -7,14 +7,6 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
 
-		// 1000000까지 숫자를 소수 판별하여 배열에 넣는다
-		boolean[] primes = new boolean[1000001];
-		for (int i = 1; i < 1000001; i++) {
-			if (isPrime(i)) {
-				primes[i] = true;
-			}
-		}
-
 		while (true) {
 			int num = Integer.parseInt(br.readLine());
 
@@ -25,7 +17,7 @@ public class Main {
 			// 2부터 시작해서 i와 num-i가 소수인지 확인한다
 			boolean isGoldbach = false;
 			for (int i = 2; i <= num / 2; i++) {
-				if (primes[i] && primes[num - i]) {
+				if (isPrime(i) && isPrime(num - i)) {
 					sb.append(num + " = " + i + " + " + (num - i)).append("\n");
 					isGoldbach = true;
 					break;
