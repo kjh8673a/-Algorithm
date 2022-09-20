@@ -1,37 +1,53 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+	static int[] arr;
+	static int sum, one, two;
 
-        int sum = 0;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 
-        int[] arr = new int[9];
+		arr = new int[9];
+		sum = 0;
+		for (int i = 0; i < 9; i++) {
+			arr[i] = Integer.parseInt(br.readLine());
+			sum += arr[i];
+		}
+		Arrays.sort(arr);
 
-        for(int i = 0; i < 9; i++) {
-            arr[i] = sc.nextInt();
-            sum += arr[i];
-        }
-        sc.close();
+		one = 0;
+		two = 0;
+		pickTwo(-1, -1);
 
-        Arrays.sort(arr);
+		for (int i = 0; i < 9; i++) {
+			if (i != one && i != two) {
+				sb.append(arr[i]).append("\n");
+			}
+		}
 
-        int a = 0;
-        int b = 0;
-        for(int i = 0; i < 9; i++) {
-            for(int j = 0; j < 9; j++) {
-                if(i != j && sum - 100 - arr[i] == arr[j]) {
-                    a = i;
-                    b = j;
-                }
-            }
-        }
+		System.out.println(sb.toString());
 
-        for(int i = 0; i < 9; i++) {
-            if(i != a && i != b) {
-                System.out.println(arr[i]);
-            }
-        }
-    }
+	}
+
+	public static void pickTwo(int a, int b) {
+		if (a != -1 && b != -1) {
+			if (sum - arr[a] - arr[b] == 100) {
+				one = a;
+				two = b;
+			}
+			return;
+		}
+		for (int i = a + 1; i < 9; i++) {
+			if (a == -1) {
+				pickTwo(i, b);
+			} else {
+				pickTwo(a, i);
+			}
+		}
+	}
+
 }
