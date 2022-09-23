@@ -4,66 +4,64 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int[] dr = {0, 0, 1, -1, -1, 1, -1, 1};
-    static int[] dc = {1, -1, 0 , 0, -1, 1, 1, -1};
-    static int w;
-    static int h;
-    static int[][] map;
-    static int cnt;
-    static boolean[][] visit;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static int[] dr = { 0, 0, 1, -1, -1, 1, -1, 1 };
+	static int[] dc = { 1, -1, 0, 0, -1, 1, 1, -1 };
+	static int w, h, cnt;
+	static boolean[][] map;
 
-        while(true) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		StringTokenizer st;
+
+		while (true) {
+			st = new StringTokenizer(br.readLine());
 			w = Integer.parseInt(st.nextToken());
-            h = Integer.parseInt(st.nextToken());
+			h = Integer.parseInt(st.nextToken());
 
-            if(w == 0 && h == 0) {
-				br.close();
-                break;
-            }
+			if (w == 0 && h == 0) {
+				break;
+			}
 
-            map = new int[h][w];
+			map = new boolean[h][w];
 
-            for(int i = 0; i < h; i++) {
+			for (int i = 0; i < h; i++) {
 				st = new StringTokenizer(br.readLine());
-                for(int j = 0; j < w; j++) {
-                    map[i][j] = Integer.parseInt(st.nextToken());
-                }
-            }
+				for (int j = 0; j < w; j++) {
+					map[i][j] = (Integer.parseInt(st.nextToken()) == 1) ? true : false;
+				}
+			}
 
-            visit = new boolean[h][w];
+			cnt = 0;
 
-            cnt = 0;
+			for (int i = 0; i < h; i++) {
+				for (int j = 0; j < w; j++) {
+					if (map[i][j]) {
+						dfs(i, j);
+						cnt++;
+					}
+				}
+			}
 
-            for(int i = 0; i < h; i++) {
-                for(int j = 0; j < w; j++) {
-                    if(map[i][j] == 1 && !visit[i][j]) {
-                        dfs(i, j);
-                        cnt++;
-                    }
-                }
-            }
+			sb.append(cnt).append("\n");
+		}
 
-            System.out.println(cnt);
+		System.out.println(sb.toString());
+	}
 
-        }
+	public static void dfs(int x, int y) {
+		map[x][y] = false;
 
-    }
+		for (int i = 0; i < 8; i++) {
+			int nr = x + dr[i];
+			int nc = y + dc[i];
 
-    public static void dfs(int x, int y) {
-        visit[x][y] = true;
+			if (nr >= 0 && nc >= 0 && nr < h && nc < w) {
+				if (map[nr][nc]) {
+					dfs(nr, nc);
+				}
+			}
+		}
+	}
 
-        for(int i = 0; i < 8; i++) {
-            int nr = x + dr[i];
-            int nc = y + dc[i];
-
-            if(nr >= 0 && nc >= 0 && nr < h && nc < w) {
-                if(map[nr][nc] == 1 && !visit[nr][nc]) {
-                    dfs(nr, nc);
-                }
-            }
-        }
-    }
 }
