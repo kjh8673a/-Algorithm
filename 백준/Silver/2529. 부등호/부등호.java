@@ -29,6 +29,7 @@ public class Main {
 
 		dfs(0, "");
 
+		// 최댓값 & 최솟값
 		System.out.println(deque.peekLast());
 		System.out.println(deque.peekFirst());
 		
@@ -41,13 +42,18 @@ public class Main {
 		}
 
 		for(int i = 0; i < 10; i++) {
+			// 맨 앞자리수
 			if(idx == 0) {
 				visit[i] = true;
 				dfs(idx + 1, ans + String.valueOf(i));
 				visit[i] = false;
-			}else {
+			}
+			
+			// 두 번째 수부터는 부등호 체크
+			else {
 				String s = symbol[idx-1];
 				switch(s) {
+					// 아직 쓰인적이 없고, 이전 숫자보다 크다면 넣을 수 있다
 					case "<":
 						if(!visit[i] && ans.charAt(idx-1)-'0'< i) {
 							visit[i] = true;
@@ -55,6 +61,7 @@ public class Main {
 							visit[i] = false;
 						}
 						break;
+					// 아직 쓰인적이 없고, 이전 숫자보다 작다면 넣을 수 있다
 					case ">":
 					if(!visit[i] && ans.charAt(idx-1)-'0'> i) {
 						visit[i] = true;
