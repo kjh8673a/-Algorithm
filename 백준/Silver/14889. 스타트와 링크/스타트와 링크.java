@@ -1,65 +1,83 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int n;
-    static int arr[][];
-    static boolean visit[];
-    static int min = Integer.MAX_VALUE;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        
-        n = sc.nextInt();
-        arr = new int[n][n];
-        visit = new boolean[n];
+	static int n, min;
+	static int[][] board;
+	static boolean[] visit;
+	static int[] groupA, groupB;
 
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                arr[i][j] = sc.nextInt();
-            }
-        }
-        
-        sc.close();
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        dfs(0, 0);
-        System.out.println(min);
-    }
+		n = Integer.parseInt(br.readLine());
 
-    public static void dfs(int idx, int count) {
-        if(count == n/2) {
-            diff();
-            return;
-        }
+		board = new int[n][n];
 
-        for(int i = idx; i < n; i++) {
-            if(!visit[i]) {
-                visit[i] = true;
-                dfs(i+1, count+1);
-                visit[i] = false;
-            }
-        }
-    }
+		for (int i = 0; i < n; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < n; j++) {
+				board[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
 
-    public static void diff() {
-        int start = 0;
-        int link = 0;
+		visit = new boolean[n];
 
-        for(int i = 0; i < n-1; i++) {
-            for(int j = i+1; j < n; j++) {
-                if(visit[i] && visit[j]) {
-                    start += arr[i][j] + arr[j][i];
-                }else if(!visit[i] && !visit[j]) {
-                    link += arr[i][j] + arr[j][i];
-                }
-            }
-        }
-    
-        int val = Math.abs(start - link);
+		groupA = new int[n / 2];
+		groupB = new int[n / 2];
 
-        if(val == 0) {
-            System.out.println(val);
-            System.exit(0);
-        }
+		min = Integer.MAX_VALUE;
 
-        min = Math.min(val, min);
-    }
+		solve(0, 0, 0);
+
+		System.out.println(min);
+
+	}
+
+	public static void solve(int idx, int aidx, int pick) {
+		// 남은사람 다 더해도 한 팀이 안꾸려지면 끝
+		if(pick + (n - idx) < n / 2) {
+			return;
+		}
+
+		// 한쪽 팀을 다 구성했으면 계산
+		if (pick == n / 2) {
+			int bidx = 0;
+			for (int i = 0; i < n; i++) {
+				if (!visit[i]) {
+					groupB[bidx++] = i;
+				}
+			}
+
+			min = Math.min(min, sinergy());
+			return;
+		}
+
+		visit[idx] = true;
+		groupA[aidx] = idx;
+		solve(idx + 1, aidx + 1, pick + 1);
+
+		visit[idx] = false;
+		solve(idx + 1, aidx, pick);
+
+	}
+
+	public static int sinergy() {
+		int aSum = 0;
+		int bSum = 0;
+
+		for (int i = 0; i < n / 2; i++) {
+			for (int j = 0; j < n / 2; j++) {
+				if (i != j) {
+					aSum += board[groupA[i]][groupA[j]];
+					bSum += board[groupB[i]][groupB[j]];
+				}
+			}
+		}
+
+		return Math.abs(aSum - bSum);
+	}
+
 }
