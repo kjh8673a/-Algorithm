@@ -54,8 +54,6 @@ public class Main {
 	public static void dijkstra() {
 		PriorityQueue<Node> pq = new PriorityQueue<>();
 
-		boolean[][] visit = new boolean[n][m];
-
 		pq.add(new Node(0, 0, 0));
 		dist[0][0] = 0;
 
@@ -70,18 +68,12 @@ public class Main {
 				return;
 			}
 
-			if(visit[pr][pc]) {
-				continue;
-			}
-
-			visit[pr][pc] = true;
-
 			for(int k = 0; k < 4; k++) {
 				int nr = pr + dr[k];
 				int nc = pc + dc[k];
 
 				if(nr >= 0 && nc >= 0 && nr < n && nc < m) {
-					if(!visit[nr][nc] && dist[nr][nc] > dist[pr][pc] + map[nr][nc]) {
+					if(dist[nr][nc] > dist[pr][pc] + map[nr][nc]) {
 						dist[nr][nc] = dist[pr][pc] + map[nr][nc];
 						pq.add(new Node(nr, nc, dist[nr][nc]));
 					}
