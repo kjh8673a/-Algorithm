@@ -45,7 +45,7 @@ public class Main {
 
 		int n = Integer.parseInt(br.readLine());
 
-		List<Line> line = new ArrayList(n);
+		List<Line> line = new ArrayList<>();
 
 		StringTokenizer st;
 		for (int i = 0; i < n; i++) {
