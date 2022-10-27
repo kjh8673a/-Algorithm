@@ -28,7 +28,10 @@ public class Main {
 		M = Integer.parseInt(st.nextToken());
 
 		board = new int[N][M];
+		// 1의 개수를 세서 total에 저장해놓는다
 		int total = 0;
+
+		// 리스트에 1인것들의 위치 저장
 		ArrayList<Node> list = new ArrayList<>();
 		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -41,10 +44,15 @@ public class Main {
 			}
 		}
 
+		// dfs를 통해 외부 공기를 -1로 만든다
 		visited = new boolean[N][M];
 		dfs(0, 0);
 
 		int ans = 0;
+		// 리스트의 사이즈만큼 반복하면서 리스트 주위에 -1의 개수를 세어 2 이상이면
+		// board 0으로 만들기, total에서 1빼기, list에서 해당 노드 제거
+		// 해당 시간에 반복을 다 돌리고나서 dfs를 통해 외부 공기 -1로 만든다
+		// total이 0이 될때까지 반복
 		while (total != 0) {
 			int len = list.size();
 			for (int i = len - 1; i >= 0; i--) {
