@@ -20,7 +20,7 @@ public class Main {
         }
 
         Arrays.sort(arr);
-        int ans = -1;
+        int ans = n;
         long sum = 0;
         for (int i = 0; i < a; i++) {
             sum += arr[i] / 2;
@@ -39,10 +39,6 @@ public class Main {
                     break;
                 }
             }
-        }
-
-        if(ans == -1) {
-            ans = n;
         }
 
         System.out.println(ans);
