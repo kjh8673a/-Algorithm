@@ -10,7 +10,7 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
 		ans = 0;
-		day = 13;
+		day = 1;
 		for (int i = 2019; i <= N; i++) {
 			doLunar(i);
 			for (int j = 0; j < 12; j++) {
@@ -33,7 +33,7 @@ public class Main {
 	}
 
 	public static void doFriday(int d, int m) {
-		if (d % 7 == 4) {
+		if (d % 7 == 6) {
 			ans++;
 		}
 		day += month[m];
