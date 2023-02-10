@@ -1,68 +1,62 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	/*
-	 * 플로이드-워셜 알고리즘
-	 */
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static List<Integer>[] adjList;
+    static boolean[] visit;
+    static int[][] board;
 
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		// 정점의 개수
-		int n = Integer.parseInt(st.nextToken());
-		int m = Integer.parseInt(st.nextToken());
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-		int[][] dist = new int[n][n];
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				if (i == j) {
-					dist[i][j] = 0; // 자기 자신은 0
-				} else {
-					dist[i][j] = 100000000; // 매우 큰 값
-				}
-			}
-		}
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-		for (int i = 0; i < m; i++) {
-			st = new StringTokenizer(br.readLine());
-			// 서로 연결되어 있으면 가중치 1로 표시
-			int a = Integer.parseInt(st.nextToken()) - 1;
-			int b = Integer.parseInt(st.nextToken()) - 1;
+        adjList = new ArrayList[N];
+        for(int i = 0; i < N; i++) {
+            adjList[i] = new ArrayList<>();
+        }   
+        
+        for(int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken()) - 1;
+            int b = Integer.parseInt(st.nextToken()) - 1;
+            adjList[a].add(b);
+            adjList[b].add(a);
+        }
 
-			dist[a][b] = 1;
-			dist[b][a] = 1;
-		}
+        board = new int[N][N];
+        for(int i = 0; i < N; i++) {
+            visit = new boolean[N];
+            solve(i, i, 1);
+        }
 
-		// 플로이드-워셜 알고리즘
-		for (int k = 0; k < n; k++) {
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < n; j++) {
-					// 기존 i~j까지의 거리와, k번째 노드를 거쳐가는 거리를 비교해 최단거리 갱신
-					dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
-				}
-			}
-		}
+        int ans = 0;
+        int min = Integer.MAX_VALUE;
+        for(int i = 0; i < N; i++) {
+            int sum = 0;
+            for(int j = 0; j < N; j++) {
+                sum += board[i][j];
+            }
+            if(sum < min) {
+                ans = i + 1;
+                min = sum;
+            }
+        }
 
-		int min = 100000000;
-		int idx = -1;
-		for (int i = 0; i < n; i++) {
-			int sum = 0;
-			for (int j = 0; j < n; j++) {
-				sum += dist[i][j];
-			}
-			if (min > sum) {
-				min = sum;
-				idx = i;
-			}
-		}
+        System.out.println(ans);
 
-		int ans = idx + 1;
+    }
 
-		System.out.println(ans);
-
-	}
+    public static void solve(int st, int n, int cnt) {
+        visit[n] = true;
+        for(int i : adjList[n]) {
+            if(!visit[i] || board[st][i] > cnt) {
+                board[st][i] = cnt;
+                solve(st, i, cnt + 1);
+            }
+        }
+    }
 
 }
