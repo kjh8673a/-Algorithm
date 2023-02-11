@@ -1,36 +1,40 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        int t = Integer.parseInt(br.readLine());
-
+        
         StringBuilder sb = new StringBuilder();
-        for (int tc = 0; tc < t; tc++) {
+
+        int tc = Integer.parseInt(br.readLine());
+        
+        for(int i = 0; i < tc; i++) {
             int n = Integer.parseInt(br.readLine());
 
             Map<String, Integer> map = new HashMap<>();
-            StringTokenizer st;
-            for (int i = 0; i < n; i++) {
-                st = new StringTokenizer(br.readLine());
+            for(int j = 0; j < n; j++) {
+                StringTokenizer st = new StringTokenizer(br.readLine()+" ");
                 st.nextToken();
-                String part = st.nextToken();
-                map.put(part, map.getOrDefault(part, 1) + 1);
+                String kind = st.nextToken();
+
+                if(map.containsKey(kind)) map.put(kind, map.get(kind) + 1);
+                else map.put(kind, 1);
             }
 
             int ans = 1;
-            for (String key : map.keySet()) {
-                ans *= map.get(key);
+            for(int num : map.values()) {
+                ans *= (num + 1);
             }
-            ans -= 1;
 
-            sb.append(ans + "\n");
+            sb.append((ans-1) + "\n");
 
         }
-
-        System.out.println(sb);
+        System.out.println(sb.toString());
 
     }
 
