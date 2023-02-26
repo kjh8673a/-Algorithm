@@ -7,13 +7,13 @@ public class Main {
     static class SegmentTree {
         long[] tree = new long[1000000 * 4];
 
-        public long init(int node, int start, int end) {
-            if (start == end) {
-                return tree[node] = 0;
-            } else {
-                return init(node * 2, start, (start + end) / 2) + init(node * 2 + 1, (start + end) / 2 + 1, end);
-            }
-        }
+        // public long init(int node, int start, int end) {
+        //     if (start == end) {
+        //         return tree[node] = 0;
+        //     } else {
+        //         return init(node * 2, start, (start + end) / 2) + init(node * 2 + 1, (start + end) / 2 + 1, end);
+        //     }
+        // }
 
         public void update(int node, int start, int end, int idx, long diff) {
             if (idx < start || idx > end) {
@@ -50,7 +50,7 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
 
         SegmentTree seg = new SegmentTree();
-        seg.init(1, 1, 1000000);
+        // seg.init(1, 1, 1000000);
 
         StringTokenizer st;
         for (int i = 0; i < n; i++) {
