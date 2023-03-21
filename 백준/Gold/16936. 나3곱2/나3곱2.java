@@ -21,7 +21,6 @@ public class Main {
         for (int i = 0; i < N; i++) {
             arr[i] = Long.parseLong(st.nextToken());
         }
-        Arrays.sort(arr);
 
         list = new ArrayList[N];
         for (int i = 0; i < N; i++) {
@@ -33,7 +32,7 @@ public class Main {
                 if (arr[i] % 3 == 0 && arr[i] / 3 == arr[j]) {
                     list[i].add(j);
                     in_degree[j]++;
-                } else if (arr[i] * 2 <= arr[N - 1] && arr[i] * 2 == arr[j]) {
+                } else if (arr[i] * 2 == arr[j]) {
                     list[i].add(j);
                     in_degree[j]++;
                 }
