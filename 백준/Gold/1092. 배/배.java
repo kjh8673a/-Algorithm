@@ -29,14 +29,17 @@ public class Main {
         } else {
             while (!box.isEmpty()) {
                 int idx = 0;
-                for (int i = 0; i < crane.size();) {
+                for (Integer curr : crane) {
                     if (idx == box.size()) {
                         break;
-                    } else if (crane.get(i) >= box.get(idx)) {
-                        box.remove(idx);
-                        i++;
-                    } else {
-                        idx++;
+                    }
+                    for (int i = idx; i < box.size(); i++) {
+                        if (curr >= box.get(i)) {
+                            box.remove(i);
+                            break;
+                        } else {
+                            idx++;
+                        }
                     }
                 }
                 ans++;
