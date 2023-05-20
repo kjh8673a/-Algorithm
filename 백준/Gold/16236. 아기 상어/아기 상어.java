@@ -86,6 +86,10 @@ public class Main {
             int c = p.y;
             int d = p.dist;
 
+            if(!pq.isEmpty() && d > pq.peek().dist) {
+                continue;
+            }
+
             for (int i = 0; i < 4; i++) {
                 int nr = r + dr[i];
                 int nc = c + dc[i];
