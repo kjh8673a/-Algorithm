@@ -18,17 +18,25 @@ public class Main {
         }
 
         for (int i = 1; i < N; i++) {
+            int prev = Integer.MAX_VALUE;
+            for (int j = 0; j < M; j++) {
+                prev = Integer.min(prev, dp[i - 1][j]);
+            }
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < M; j++) {
                 dp[i][j] = Integer.parseInt(st.nextToken());
-                int min = Integer.MAX_VALUE;
-                for (int k = 0; k < M; k++) {
-                    if (k == j) {
-                        continue;
+                if (dp[i - 1][j] != prev) {
+                    dp[i][j] += prev;
+                } else {
+                    int min = Integer.MAX_VALUE;
+                    for (int k = 0; k < M; k++) {
+                        if (k == j) {
+                            continue;
+                        }
+                        min = Math.min(min, dp[i - 1][k]);
                     }
-                    min = Math.min(min, dp[i - 1][k]);
+                    dp[i][j] += min;
                 }
-                dp[i][j] += min;
             }
         }
 
