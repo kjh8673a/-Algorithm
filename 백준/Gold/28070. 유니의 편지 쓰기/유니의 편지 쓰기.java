@@ -1,52 +1,48 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        int[] dp = new int[120002];
-        StringTokenizer st;
-        for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            String a = st.nextToken();
-            int start_year = Integer.parseInt(a.split("-")[0]);
-            int start_month = Integer.parseInt(a.split("-")[1]);
-            dp[start_year * 12 + start_month]++;
 
-            String b = st.nextToken();
-            int end_year = Integer.parseInt(b.split("-")[0]);
-            int end_month = Integer.parseInt(b.split("-")[1]);
-            dp[end_year * 12 + end_month + 1]--;
-
-        }
-
-        for (int i = 24000; i < 120001; i++) {
-            dp[i] += dp[i - 1];
-        }
-
-        int max = 0;
-        int year = 0;
-        int month = 0;
-        for (int i = 24000; i < 120001; i++) {
-            if (dp[i] > max) {
-                max = dp[i];
-                year = i / 12;
-                month = i % 12;
-            }
-        }
-
-        if (month == 0) {
-            year--;
-            month = 12;
-        }
-
-        if (month < 10) {
-            System.out.println(year + "-0" + month);
-        } else {
-            System.out.println(year + "-" + month);
-        }
-
-    }
-
+	public static <T> void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N=Integer.parseInt(br.readLine()); 
+		StringTokenizer st ;
+		int []dp=new int[10010*12];
+		for(int i=0; i<N; i++){
+			st= new StringTokenizer(br.readLine());
+			String []str1=st.nextToken().split("-");
+			String []str2=st.nextToken().split("-");
+			int year=Integer.parseInt(str1[0]);
+			int month=Integer.parseInt(str1[1]);
+			dp[year*12+month]+=1;
+			year=Integer.parseInt(str2[0]);
+			month=Integer.parseInt(str2[1]);
+			dp[year*12+month+1]-=1;
+		}
+		int max=0;
+		int idxmonth=0;
+		int num=10010*12;
+		int i=1999*12;
+		for(; i<num; i++){
+				dp[i]+=dp[i-1];
+				if(max<dp[i]){
+					idxmonth=i;
+					max=dp[i];
+				}
+		}
+		int year=idxmonth/12;
+		String month="";
+		if(idxmonth%12==0){
+			year--;
+			month="12";
+		}else if(idxmonth%12<10){
+			month ="0"+(idxmonth%12);
+		}else if (idxmonth%12>=10){
+			month=(idxmonth%12)+"";
+		}
+		String ans=year+"-"+month;
+		System.out.println(ans);
+	}
 }
