@@ -10,28 +10,28 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             arr[i] = Long.parseLong(st.nextToken());
-            sum += arr[i];
+            sum += arr[i]; // 처음부터 끝까지 한바퀴는 돌아야함
         }
 
-        long[] forward = new long[N];
-        long[] dp_forward = new long[N];
-        forward[0] = dp_forward[0] = Math.max(arr[0], 0);
+        long value = Math.max(arr[0], 0); // 인덱스별로 구한 부분합
+        long[] forward = new long[N]; // 최종적으로 값을 담을 dp배열
+        forward[0] = Math.max(arr[0], 0);
         for (int i = 1; i < N; i++) {
-            forward[i] = Math.max(forward[i - 1] + arr[i], arr[i]);
-            dp_forward[i] = Math.max(dp_forward[i - 1], forward[i]);
+            value = Math.max(value + arr[i], arr[i]); // 현재 인덱스의 값과 이전까지의 최대값을 더해서 비교 -> 현재까지의 최대값
+            forward[i] = Math.max(forward[i - 1], value); // dp배열에 이전 dp배열의 값과 현재 value값을 비교해서 넣어줌
         }
 
-        long[] reverse = new long[N];
-        long[] dp_reverse = new long[N];
-        reverse[N - 1] = dp_reverse[N - 1] = Math.max(arr[N - 1], 0);
+        value = Math.max(arr[N - 1], 0);
+        long[] reverse = new long[N]; // 뒤에서부터 앞으로 더하며 값을 담을 dp배열
+        reverse[N - 1] = Math.max(arr[N - 1], 0);
         for (int i = N - 2; i >= 0; i--) {
-            reverse[i] = Math.max(reverse[i + 1] + arr[i], arr[i]);
-            dp_reverse[i] = Math.max(dp_reverse[i + 1], reverse[i]);
+            value = Math.max(value + arr[i], arr[i]);
+            reverse[i] = Math.max(reverse[i + 1], value);
         }
 
         long max = 0;
-        for (int i = 0; i < N - 1; i++) {
-            max = Math.max(dp_forward[i] + dp_reverse[i + 1], max);
+        for (int i = 0; i < N - 1; i++) { // [0 ~ i], [i + 1 ~ N - 1] 두 구간으로 나누어 forward와 reverse의 합의 최대값을 구한다
+            max = Math.max(forward[i] + reverse[i + 1], max);
         }
 
         long ans = sum + max;
