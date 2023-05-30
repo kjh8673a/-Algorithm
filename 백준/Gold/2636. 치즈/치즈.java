@@ -14,8 +14,7 @@ public class Main {
 
     }
 
-    static int[] dr = { 1, -1, 0, 0 };
-    static int[] dc = { 0, 0, 1, -1 };
+    static int[][] vector = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
     static int N, M, cnt, time;
     static int[][] board;
 
@@ -70,8 +69,8 @@ public class Main {
             Node node = queue.poll();
 
             for (int i = 0; i < 4; i++) {
-                int nr = node.r + dr[i];
-                int nc = node.c + dc[i];
+                int nr = node.r + vector[i][0];
+                int nc = node.c + vector[i][1];
 
                 if (nr < 0 || nc < 0 || nr >= N || nc >= M || visit[nr][nc]) {
                     continue;
