@@ -28,7 +28,7 @@ public class Main {
             return false;
         }
 
-        if (check(front) && check(back)) {
+        if (check(front)) {
             return true;
         }
 
