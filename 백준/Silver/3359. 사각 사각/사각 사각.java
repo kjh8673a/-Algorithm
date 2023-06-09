@@ -23,7 +23,7 @@ public class Main {
                     dp[i - 1][1] + Math.abs(arr[i - 1][0] - arr[i][0])) + arr[i][1];
         }
 
-        System.out.println(dp[N - 1][0] > dp[N - 1][1] ? dp[N - 1][0] : dp[N - 1][1]);
+        System.out.println(Math.max(dp[N - 1][0], dp[N - 1][1]));
     }
 
 }
