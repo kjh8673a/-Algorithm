@@ -11,7 +11,7 @@ public class Main {
 
         list = new ArrayList<>();
 
-        makeNum(0, 0);
+        makeNum();
 
         Collections.sort(list);
 
@@ -23,17 +23,18 @@ public class Main {
 
     }
 
-    private static void makeNum(long num, int idx) {
+    private static void makeNum() {
+        for (int i = 1; i < (1 << 10); i++) {
 
-        if (idx == 10) {
-            if (!list.contains(num)) {
-                list.add(num);
+            long num = 0;
+            for (int j = 0; j < 10; j++) {
+                if ((i & (1 << j)) > 0) {
+                    num = num * 10 + digit[j];
+                }
             }
-            return;
-        }
 
-        makeNum(num, idx + 1);
-        makeNum(num * 10 + digit[idx], idx + 1);
+            list.add(num);
+        }
     }
 
 }
