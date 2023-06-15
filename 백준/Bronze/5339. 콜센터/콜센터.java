@@ -1,17 +1,19 @@
 import java.io.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        System.out.println("     /~\\");
-        System.out.println("    ( oo|");
-        System.out.println("    _\\=/_");
-        System.out.println("   /  _  \\");
-        System.out.println("  //|/.\\|\\\\");
-        System.out.println(" ||  \\ /  ||");
-        System.out.println("============");
-        System.out.println("|          |");
-        System.out.println("|          |");
-        System.out.println("|          |");
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("     /~\\").append("\n");
+        sb.append("    ( oo|").append("\n");
+        sb.append("    _\\=/_").append("\n");
+        sb.append("   /  _  \\").append("\n");
+        sb.append("  //|/.\\|\\\\").append("\n");
+        sb.append(" ||  \\ /  ||").append("\n");
+        sb.append("============").append("\n");
+        sb.append("|          |").append("\n");
+        sb.append("|          |").append("\n");
+        sb.append("|          |").append("\n");
+        System.out.println(sb);
     }
 
 }
