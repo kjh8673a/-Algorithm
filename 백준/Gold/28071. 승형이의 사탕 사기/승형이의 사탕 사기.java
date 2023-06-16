@@ -2,38 +2,71 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static class Node {
+        int candy;
+        int box;
+
+        public Node(int candy, int box) {
+            this.candy = candy;
+            this.box = box;
+        }
+    }
+
+    static int N, M, K, max, ans;
+    static int[] arr;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-        int K = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
 
-        int[] arr = new int[N];
-        int[][] dp = new int[M + 1][K];
+        arr = new int[N];
+        max = 0;
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
-            dp[1][arr[i] % K] = Math.max(dp[1][arr[i] % K], arr[i]);
+            max = Math.max(max, arr[i]);
         }
 
-        for (int i = 2; i < M + 1; i++) {
-            for (int j = 0; j < N; j++) {
-                for (int k = 0; k < K; k++) {
-                    if (dp[i - 1][Math.floorMod(k - arr[j], K)] != 0) {
-                        dp[i][k] = Math.max(dp[i][k], dp[i - 1][Math.floorMod(k - arr[j], K)] + arr[j]);
-                    }
+        ans = 0;
+        bfs();
+
+        System.out.println(ans);
+    }
+
+    private static void bfs() {
+        Queue<Node> queue = new LinkedList<>();
+        boolean[] visit = new boolean[max * M + 1];
+
+        for (int i = 0; i < N; i++) {
+            queue.add(new Node(arr[i], 1));
+            visit[arr[i]] = true;
+        }
+
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+
+            if (node.candy % K == 0) {
+                ans = Math.max(node.candy, ans);
+            }
+
+            if (node.box == M) {
+                continue;
+            }
+
+            for (int i = 0; i < N; i++) {
+                int nCandy = node.candy + arr[i];
+                int nBox = node.box + 1;
+                if (!visit[nCandy]) {
+                    visit[nCandy] = true;
+                    queue.add(new Node(nCandy, nBox));
                 }
             }
         }
 
-        int ans = 0;
-        for (int i = 1; i < M + 1; i++) {
-            ans = Math.max(dp[i][0], ans);
-        }
-
-        System.out.println(ans);
     }
 
 }
