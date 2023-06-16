@@ -3,10 +3,12 @@ import java.util.*;
 
 public class Main {
     static class Node {
+        int start;
         int candy;
         int box;
 
-        public Node(int candy, int box) {
+        public Node(int start, int candy, int box) {
+            this.start = start;
             this.candy = candy;
             this.box = box;
         }
@@ -42,7 +44,7 @@ public class Main {
         boolean[] visit = new boolean[max * M + 1];
 
         for (int i = 0; i < N; i++) {
-            queue.add(new Node(arr[i], 1));
+            queue.add(new Node(i, arr[i], 1));
             visit[arr[i]] = true;
         }
 
@@ -57,12 +59,12 @@ public class Main {
                 continue;
             }
 
-            for (int i = 0; i < N; i++) {
+            for (int i = node.start; i < N; i++) {
                 int nCandy = node.candy + arr[i];
                 int nBox = node.box + 1;
                 if (!visit[nCandy]) {
                     visit[nCandy] = true;
-                    queue.add(new Node(nCandy, nBox));
+                    queue.add(new Node(node.start, nCandy, nBox));
                 }
             }
         }
