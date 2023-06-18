@@ -20,29 +20,24 @@ public class Main {
         }
 
         st = new StringTokenizer(br.readLine());
-        pos = D;
+        pos = D + 1;
         for (int i = 0; i < N; i++) {
             int size = Integer.parseInt(st.nextToken());
-            dropPizza(size);
+            binaryPizza(size, 0, pos - 1);
         }
 
         System.out.println(pos);
     }
 
-    private static void dropPizza(int size) {
-        boolean flag = false;
-
-        for (int i = pos; i > 0; i--) {
-            if (size <= oven[i]) {
-                pos = i;
-                oven[i] = 0;
-                flag = true;
-                break;
+    private static void binaryPizza(int size, int start, int end) {
+        while (start <= end) {
+            int mid = (start + end) / 2;
+            if (size <= oven[mid]) {
+                start = mid + 1;
+                pos = mid;
+            } else {
+                end = mid - 1;
             }
-        }
-
-        if (!flag) {
-            pos = 0;
         }
     }
 
