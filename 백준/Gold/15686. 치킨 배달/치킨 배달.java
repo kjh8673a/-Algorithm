@@ -1,83 +1,67 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int n, m;
-    static int[][] city;
-    static int[] chicken;
-    static int min;
+    static class Node {
+        int r;
+        int c;
 
-    public static void main(String[] args) throws NumberFormatException, IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-
-        city = new int[n][n];
-        int cnt = 0;
-        for (int i = 0; i < n; i++) {
-            st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < n; j++) {
-                int num = Integer.parseInt(st.nextToken());
-                city[i][j] = num;
-                if (num == 2)
-                    cnt++;
-            }
+        public Node(int r, int c) {
+            this.r = r;
+            this.c = c;
         }
-
-        chicken = new int[cnt];
-        int idx = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (city[i][j] == 2) {
-                    chicken[idx++] = i * 100 + j;
-                }
-            }
-        }
-
-        min = Integer.MAX_VALUE;
-        solve(0, 0);
-
-        System.out.println(min);
-
     }
 
-    public static void solve(int idx, int cnt) {
+    static ArrayList<Node> chicken, home;
 
-        if (cnt == chicken.length - m) {
-            int sum = 0;
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-                    if (city[i][j] == 1) {
-
-                        int distance = Integer.MAX_VALUE;
-                        for (int k = 0; k < chicken.length; k++) {
-                            if (city[chicken[k] / 100][chicken[k] % 100] == 2) {
-                                int now = Math.abs(i - chicken[k] / 100) + Math.abs(j - chicken[k] % 100);
-                                distance = Math.min(distance, now);
-                            }
-                        }
-                        sum += distance;
-                    }
-
+        int[][] city = new int[N][N];
+        chicken = new ArrayList<>();
+        home = new ArrayList<>();
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < N; j++) {
+                city[i][j] = Integer.parseInt(st.nextToken());
+                if (city[i][j] == 1) {
+                    home.add(new Node(i, j));
+                } else if (city[i][j] == 2) {
+                    chicken.add(new Node(i, j));
                 }
             }
-            min = Math.min(min, sum);
-            return;
         }
 
-        if (idx == chicken.length) {
-            return;
+        int ans = Integer.MAX_VALUE;
+        // 폐업시키지 않을 치킨집 M개 고르기
+        for (int i = 0; i < 1 << chicken.size(); i++) {
+            if (Integer.bitCount(i) == M) {
+                // 거리 계산해서 최솟값 찾기
+                ans = Math.min(caculate(i), ans);
+            }
         }
 
-        city[chicken[idx] / 100][chicken[idx] % 100] = 0;
-        solve(idx + 1, cnt + 1);
-        city[chicken[idx] / 100][chicken[idx] % 100] = 2;
-        solve(idx + 1, cnt);
+        System.out.println(ans);
+    }
+
+    private static int caculate(int list) {
+        int sum = 0;
+        for (Node h : home) {
+            int distance = Integer.MAX_VALUE;
+            for (int i = 0; i < chicken.size(); i++) {
+                // 해당 번호 치킨집이 list에 선택된 치킨집일때만 계산
+                if ((list & (1 << i)) != 0) {
+                    Node c = chicken.get(i);
+                    distance = Math.min(Math.abs(h.r - c.r) + Math.abs(h.c - c.c), distance);
+                }
+            }
+            // 집마다 거리의 최솟값을 더함
+            sum += distance;
+        }
+        return sum;
     }
 
 }
