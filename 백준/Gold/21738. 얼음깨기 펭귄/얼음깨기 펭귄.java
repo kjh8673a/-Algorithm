@@ -4,7 +4,6 @@ import java.util.*;
 public class Main {
     static int N, S, P, ans;
     static ArrayList<ArrayList<Integer>> list;
-    static int[] dist;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,17 +25,9 @@ public class Main {
             list.get(b).add(a);
         }
 
-        // 펭귄과 지지대 블록의 거리 저장
-        dist = new int[S + 1];
+        ans = N - 1;
 
         bfs(P);
-
-        int ans = N - 1;
-
-        // 거리가 짧은 2개 지지대 블록까지의 얼음만 깨지 않는다.
-        Arrays.sort(dist);
-        ans -= dist[1];
-        ans -= dist[2];
 
         System.out.println(ans);
     }
@@ -48,13 +39,15 @@ public class Main {
         visit[start] = true;
 
         int depth = -1;
-        while (!queue.isEmpty()) {
+        int closeCnt = 0;
+        while (!queue.isEmpty() && closeCnt < 2) {
             depth++;
             int len = queue.size();
             for (int i = 0; i < len; i++) {
                 int num = queue.poll();
-                if (num <= S) {
-                    dist[num] = depth;
+                if (num <= S && closeCnt < 2) {
+                    ans -= depth;
+                    closeCnt++;
                     continue;
                 }
 
