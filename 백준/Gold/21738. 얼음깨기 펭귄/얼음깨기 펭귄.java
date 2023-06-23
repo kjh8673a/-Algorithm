@@ -41,36 +41,31 @@ public class Main {
         System.out.println(ans);
     }
 
-    static class Node {
-        int num;
-        int cnt;
-
-        public Node(int num, int cnt) {
-            this.num = num;
-            this.cnt = cnt;
-        }
-    }
-
     private static void bfs(int start) {
-        Queue<Node> queue = new LinkedList<>();
+        Queue<Integer> queue = new LinkedList<>();
         boolean[] visit = new boolean[N + 1];
-        queue.add(new Node(start, 0));
+        queue.add(start);
         visit[start] = true;
 
+        int depth = -1;
         while (!queue.isEmpty()) {
-            Node node = queue.poll();
+            depth++;
+            int len = queue.size();
+            for (int i = 0; i < len; i++) {
+                int num = queue.poll();
+                if (num <= S) {
+                    dist[num] = depth;
+                    continue;
+                }
 
-            if (node.num <= S) {
-                dist[node.num] = node.cnt;
-                continue;
-            }
-
-            for (int next : list.get(node.num)) {
-                if (!visit[next]) {
-                    queue.add(new Node(next, node.cnt + 1));
-                    visit[next] = true;
+                for (int next : list.get(num)) {
+                    if (!visit[next]) {
+                        queue.add(next);
+                        visit[next] = true;
+                    }
                 }
             }
+
         }
     }
 
