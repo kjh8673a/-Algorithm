@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 
 public class Main {
     static String S, T;
@@ -30,11 +31,7 @@ public class Main {
         }
 
         if (t.startsWith("B")) {
-            String reverse = "";
-            for (int i = len - 1; i > 0; i--) {
-                reverse += t.charAt(i);
-            }
-            makeS(reverse);
+            makeS(new StringBuilder(t.substring(1)).reverse().toString());
         }
     }
 }
