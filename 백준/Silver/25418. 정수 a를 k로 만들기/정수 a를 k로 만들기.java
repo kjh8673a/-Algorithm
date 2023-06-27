@@ -8,16 +8,28 @@ public class Main {
         int A = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
 
-        int[] dp = new int[K + 1];
-        for (int i = A + 1; i <= K; i++) {
-            if (i % 2 == 0 && i / 2 >= A) {
-                dp[i] = Math.min(dp[i / 2], dp[i - 1]) + 1;
+        int ans = 0;
+        while (true) {
+            if (K % 2 == 0) {
+                if (K / 2 < A) {
+                    break;
+                } else {
+                    K /= 2;
+                    ans++;
+                }
             } else {
-                dp[i] = dp[i - 1] + 1;
+                if (K - 1 < A) {
+                    break;
+                } else {
+                    K -= 1;
+                    ans++;
+                }
             }
         }
 
-        System.out.println(dp[K]);
+        ans += K - A;
+
+        System.out.println(ans);
     }
 
 }
