@@ -18,14 +18,17 @@ public class Main {
 
     static int[][] vector = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
 
+    static int N, M, T;
+    static int[][] board;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-        int T = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        T = Integer.parseInt(st.nextToken());
 
-        int[][] board = new int[N][M];
+        board = new int[N][M];
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < M; j++) {
@@ -33,18 +36,20 @@ public class Main {
             }
         }
 
+        System.out.println(bfs());
+    }
+
+    private static String bfs() {
         Queue<Node> queue = new LinkedList<>();
         boolean[][][] visit = new boolean[N][M][2];
         queue.add(new Node(0, 0, 0, false));
         visit[0][0][0] = true;
 
-        int ans = 0;
         while (!queue.isEmpty()) {
             Node node = queue.poll();
 
             if (node.r == N - 1 && node.c == M - 1) {
-                ans = node.time;
-                break;
+                return String.valueOf(node.time);
             }
 
             if (node.time == T) {
@@ -81,7 +86,7 @@ public class Main {
             }
         }
 
-        System.out.println(ans == 0 ? "Fail" : ans);
+        return "Fail";
     }
 
 }
