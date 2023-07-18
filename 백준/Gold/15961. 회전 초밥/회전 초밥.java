@@ -20,36 +20,27 @@ public class Main {
         int cnt = 0;
         int bonus = 0;
         for (int i = 0; i < k; i++) {
-            if (check[sushi[i]] == 0) {
+            if (check[sushi[i]]++ == 0) {
                 cnt++;
             }
-            check[sushi[i]]++;
         }
-        if (check[c] == 0) {
-            bonus = 1;
-        }
+        bonus = check[c] == 0 ? 1 : 0;
 
         int ans = cnt + bonus;
         int left = 0;
         int right = k - 1;
         while (left < N) {
-            check[sushi[left]]--;
-            if (check[sushi[left]] == 0) {
+            if (--check[sushi[left]] == 0) {
                 cnt--;
             }
             left++;
 
             right++;
-            check[sushi[right % N]]++;
-            if (check[sushi[right % N]] == 1) {
+            if (++check[sushi[right % N]] == 1) {
                 cnt++;
             }
 
-            if (check[c] == 0) {
-                bonus = 1;
-            } else {
-                bonus = 0;
-            }
+            bonus = check[c] == 0 ? 1 : 0;
 
             ans = Math.max(ans, cnt + bonus);
         }
