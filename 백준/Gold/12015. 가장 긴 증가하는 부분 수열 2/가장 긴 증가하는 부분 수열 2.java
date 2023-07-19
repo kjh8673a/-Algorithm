@@ -3,8 +3,6 @@ import java.util.*;
 
 public class Main {
 
-    static int[] dp;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
@@ -14,14 +12,13 @@ public class Main {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        dp = new int[N + 1];
+        int[] dp = new int[N + 1];
         int max = 0;
         for (int i = 0; i < N; i++) {
             if (arr[i] > dp[max]) {
-                max++;
-                dp[max] = arr[i];
+                dp[++max] = arr[i];
             } else {
-                int idx = binarySearch(0, max, arr[i]);
+                int idx = binarySearch(dp, 0, max, arr[i]);
                 dp[idx] = arr[i];
             }
         }
@@ -29,11 +26,11 @@ public class Main {
         System.out.println(max);
     }
 
-    private static int binarySearch(int left, int right, int key) {
+    private static int binarySearch(int[] arr, int left, int right, int key) {
         int mid = 0;
         while (left < right) {
             mid = (left + right) / 2;
-            if (dp[mid] < key) {
+            if (arr[mid] < key) {
                 left = mid + 1;
             } else {
                 right = mid;
