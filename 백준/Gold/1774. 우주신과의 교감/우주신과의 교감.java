@@ -65,7 +65,8 @@ public class Main {
         pq.add(new Node(start, 0));
 
         double total = 0;
-        while (!pq.isEmpty()) {
+        int pick = 0;
+        while (pick < n) {
             Node node = pq.poll();
 
             if (visit[node.point]) {
@@ -74,6 +75,7 @@ public class Main {
 
             visit[node.point] = true;
             total += node.dist;
+            pick++;
 
             for (Node next : list.get(node.point)) {
                 if (!visit[next.point]) {
