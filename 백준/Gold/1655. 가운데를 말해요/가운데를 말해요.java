@@ -11,19 +11,16 @@ public class Main {
         for (int i = 0; i < N; i++) {
             int num = Integer.parseInt(br.readLine());
 
-            if (left.isEmpty()) {
-                left.add(num);
-            } else if (left.peek() >= num) {
+            if (left.isEmpty() || left.peek() >= num) {
                 left.add(num);
             } else {
                 right.add(num);
             }
 
-            while (left.size() - right.size() > 1) {
+            int diff = left.size() - right.size();
+            if (diff == 2) {
                 right.add(left.poll());
-            }
-
-            while (right.size() - left.size() > 0) {
+            } else if (diff == -1) {
                 left.add(right.poll());
             }
 
