@@ -15,7 +15,7 @@ public class Main {
 
         int[] dp = new int[k + 1];
         for (int i = 1; i <= k; i++) {
-            dp[i] = 10001;
+            dp[i] = Integer.MAX_VALUE - 1;
 
             for (int j = 0; j < n; j++) {
                 if (i - coin[j] >= 0) {
@@ -24,7 +24,7 @@ public class Main {
             }
         }
 
-        System.out.println(dp[k] == 10001 ? -1 : dp[k]);
+        System.out.println(dp[k] == Integer.MAX_VALUE - 1 ? -1 : dp[k]);
     }
 
 }
