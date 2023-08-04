@@ -14,11 +14,13 @@ public class Main {
         }
 
         int[] dp = new int[k + 1];
-        Arrays.fill(dp, 10001);
-        dp[0] = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = coin[i]; j <= k; j++) {
-                dp[j] = Math.min(dp[j], dp[j - coin[i]] + 1);
+        for (int i = 1; i <= k; i++) {
+            dp[i] = 10001;
+
+            for (int j = 0; j < n; j++) {
+                if (i - coin[j] >= 0) {
+                    dp[i] = Math.min(dp[i], dp[i - coin[j]] + 1);
+                }
             }
         }
 
