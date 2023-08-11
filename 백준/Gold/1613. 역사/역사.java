@@ -35,13 +35,18 @@ public class Main {
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
 
-            if (table[a][b]) {
-                sb.append(-1).append("\n");
-            } else if (table[b][a]) {
-                sb.append(1).append("\n");
+            boolean foward = table[a][b];
+            boolean reverse = table[b][a];
+
+            if (foward && !reverse) {
+                sb.append("-1");
+            } else if (!foward && reverse) {
+                sb.append("1");
             } else {
-                sb.append(0).append("\n");
+                sb.append("0");
             }
+
+            sb.append("\n");
         }
 
         System.out.println(sb);
