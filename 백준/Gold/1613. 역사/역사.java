@@ -19,8 +19,11 @@ public class Main {
 
         for (int k = 1; k <= N; k++) {
             for (int i = 1; i <= N; i++) {
+                if (!table[i][k]) {
+                    continue;
+                }
                 for (int j = 1; j <= N; j++) {
-                    if (table[i][k] && table[k][j]) {
+                    if (table[k][j]) {
                         table[i][j] = true;
                     }
                 }
