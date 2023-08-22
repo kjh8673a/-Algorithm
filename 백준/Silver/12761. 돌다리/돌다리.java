@@ -12,78 +12,73 @@ public class Main {
         }
     }
 
-    static int A, B, N, M;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        A = Integer.parseInt(st.nextToken());
-        B = Integer.parseInt(st.nextToken());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        int A = Integer.parseInt(st.nextToken());
+        int B = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-        System.out.println(bfs());
+        System.out.println(bfs(A, B, N, M));
     }
 
-    private static int bfs() {
+    private static int bfs(int a, int b, int n, int m) {
         Queue<Node> queue = new LinkedList<>();
         boolean[] visit = new boolean[100001];
 
-        queue.add(new Node(N, 0));
-        visit[N] = true;
+        queue.add(new Node(n, 0));
+        visit[n] = true;
 
         while (!queue.isEmpty()) {
             Node node = queue.poll();
 
-            if (node.point == M) {
+            if (node.point == m) {
                 return node.cnt;
             }
 
-            for (int i = 0; i < 8; i++) {
-                int next = move(node.point, i);
+            if (node.point + 1 <= 100000 && !visit[node.point + 1]) {
+                visit[node.point + 1] = true;
+                queue.add(new Node(node.point + 1, node.cnt + 1));
+            }
 
-                if (next < 0 || next > 100000 || visit[next]) {
-                    continue;
-                }
+            if (node.point - 1 >= 0 && !visit[node.point - 1]) {
+                visit[node.point - 1] = true;
+                queue.add(new Node(node.point - 1, node.cnt + 1));
+            }
 
-                visit[next] = true;
-                queue.add(new Node(next, node.cnt + 1));
+            if (node.point + a <= 100000 && !visit[node.point + a]) {
+                visit[node.point + a] = true;
+                queue.add(new Node(node.point + a, node.cnt + 1));
+            }
+
+            if (node.point - a >= 0 && !visit[node.point - a]) {
+                visit[node.point - a] = true;
+                queue.add(new Node(node.point - a, node.cnt + 1));
+            }
+
+            if (node.point + b <= 100000 && !visit[node.point + b]) {
+                visit[node.point + b] = true;
+                queue.add(new Node(node.point + b, node.cnt + 1));
+            }
+
+            if (node.point - b >= 0 && !visit[node.point - b]) {
+                visit[node.point - b] = true;
+                queue.add(new Node(node.point - b, node.cnt + 1));
+            }
+
+            if (node.point * a <= 100000 && !visit[node.point * a]) {
+                visit[node.point * a] = true;
+                queue.add(new Node(node.point * a, node.cnt + 1));
+            }
+
+            if (node.point * b <= 100000 && !visit[node.point * b]) {
+                visit[node.point * b] = true;
+                queue.add(new Node(node.point * b, node.cnt + 1));
             }
         }
 
         return 0;
-    }
-
-    private static int move(int curr, int type) {
-        int next = 0;
-        switch (type) {
-            case 0:
-                next = curr + 1;
-                break;
-            case 1:
-                next = curr - 1;
-                break;
-            case 2:
-                next = curr + A;
-                break;
-            case 3:
-                next = curr - A;
-                break;
-            case 4:
-                next = curr + B;
-                break;
-            case 5:
-                next = curr - B;
-                break;
-            case 6:
-                next = curr * A;
-                break;
-            case 7:
-                next = curr * B;
-                break;
-        }
-
-        return next;
     }
 
 }
