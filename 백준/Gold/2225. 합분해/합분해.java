@@ -20,10 +20,8 @@ public class Main {
 
         for (int i = 2; i <= k; i++) {
             for (int j = 1; j <= n; j++) {
-                for (int l = 0; l <= j; l++) {
-                    dp[i][j] += dp[i - 1][j - l];
-                    dp[i][j] %= MOD;
-                }
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                dp[i][j] %= MOD;
             }
         }
 
