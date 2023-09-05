@@ -56,15 +56,7 @@ public class Main {
         while (!queue.isEmpty()) {
             Node node = queue.poll();
 
-            if (node.dist >= len) {
-                if (node.dist > len) {
-                    ans = start + board[node.r][node.c];
-                } else {
-                    ans = Math.max(ans, start + board[node.r][node.c]);
-                }
-                len = node.dist;
-            }
-
+            boolean flag = false;
             for (int i = 0; i < 4; i++) {
                 int nr = node.r + vector[i][0];
                 int nc = node.c + vector[i][1];
@@ -74,9 +66,19 @@ public class Main {
                 }
 
                 if (board[nr][nc] != 0) {
+                    flag = true;
                     visit[nr][nc] = true;
                     queue.add(new Node(nr, nc, node.dist + 1));
                 }
+            }
+
+            if (!flag && node.dist >= len) {
+                if (node.dist > len) {
+                    ans = start + board[node.r][node.c];
+                } else {
+                    ans = Math.max(ans, start + board[node.r][node.c]);
+                }
+                len = node.dist;
             }
         }
     }
