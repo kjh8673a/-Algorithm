@@ -27,8 +27,8 @@ public class Main {
     }
 
     private static void dfs(int r, int c, int cnt) {
-        if (cnt == K) {
-            if (r == 0 && c == C - 1) {
+        if (r == 0 && c == C - 1) {
+            if (cnt == K) {
                 ans++;
             }
             return;
