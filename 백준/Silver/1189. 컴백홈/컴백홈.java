@@ -34,6 +34,13 @@ public class Main {
             return;
         }
 
+        if (cnt == K) {
+            if (r == 0 && c == C - 1) {
+                ans++;
+            }
+            return;
+        }
+
         for (int i = 0; i < 4; i++) {
             int nr = r + vector[i][0];
             int nc = c + vector[i][1];
