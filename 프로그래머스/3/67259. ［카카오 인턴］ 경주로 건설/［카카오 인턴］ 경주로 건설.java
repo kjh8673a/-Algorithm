@@ -55,11 +55,13 @@ class Solution {
                     continue;
                 }
                 
+                // 이전 방향과 달라지면 코너이므로 비용 추가.
                 int cost = 100;
                 if(cur.dir != -1 && cur.dir != i) {
                     cost += 500;
                 }
                 
+                // 이미 방문한 곳인데 비용이 더 적다면 보낼 수 있다.
                 if(!visit[nr][nc][i] || cur.cost + cost <= track[nr][nc]) {
                     queue.add(new Node(nr, nc, i, cur.cost + cost));
                     track[nr][nc] = cur.cost + cost;
