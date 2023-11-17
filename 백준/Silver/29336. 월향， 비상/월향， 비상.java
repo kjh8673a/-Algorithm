@@ -22,7 +22,7 @@ public class Main {
             T = Integer.parseInt(st.nextToken());
             int Q = Integer.parseInt(st.nextToken());
 
-            while (!pq.isEmpty() && sum < Q) {
+            while (flag && !pq.isEmpty() && sum < Q) {
                 sum += pq.poll() + T;
             }
 
@@ -30,7 +30,7 @@ public class Main {
                 flag = false;
             }
         }
-        while (!pq.isEmpty()) {
+        while (flag && !pq.isEmpty()) {
             sum += pq.poll() + T;
         }
 
