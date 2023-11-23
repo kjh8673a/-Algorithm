@@ -3,14 +3,10 @@ import java.io.*;
 
 public class Main {
     static class Node {
-        int J;
-        int O;
-        int I;
+        int[] cnt;
 
-        public Node(int J, int O, int I) {
-            this.J = J;
-            this.O = O;
-            this.I = I;
+        public Node(int[] cnt) {
+            this.cnt = cnt;
         }
     }
 
@@ -23,31 +19,32 @@ public class Main {
         int K = Integer.parseInt(br.readLine());
 
         Node[][] board = new Node[M + 1][N + 1];
+        int[] init = { 0, 0, 0 };
         for (int i = 0; i < M + 1; i++) {
-            Arrays.fill(board[i], new Node(0, 0, 0));
+            Arrays.fill(board[i], new Node(init));
         }
         for (int i = 1; i < M + 1; i++) {
             String line = br.readLine();
             for (int j = 1; j < N + 1; j++) {
-                Node now = new Node(0, 0, 0);
-                now.J = board[i - 1][j].J + board[i][j - 1].J - board[i - 1][j - 1].J;
-                now.O = board[i - 1][j].O + board[i][j - 1].O - board[i - 1][j - 1].O;
-                now.I = board[i - 1][j].I + board[i][j - 1].I - board[i - 1][j - 1].I;
+                int[] tmp = new int[3];
+                tmp[0] = board[i - 1][j].cnt[0] + board[i][j - 1].cnt[0] - board[i - 1][j - 1].cnt[0];
+                tmp[1] = board[i - 1][j].cnt[1] + board[i][j - 1].cnt[1] - board[i - 1][j - 1].cnt[1];
+                tmp[2] = board[i - 1][j].cnt[2] + board[i][j - 1].cnt[2] - board[i - 1][j - 1].cnt[2];
 
                 char c = line.charAt(j - 1);
                 switch (c) {
                     case 'J':
-                        now.J++;
+                        tmp[0]++;
                         break;
                     case 'O':
-                        now.O++;
+                        tmp[1]++;
                         break;
                     case 'I':
-                        now.I++;
+                        tmp[2]++;
                         break;
                 }
 
-                board[i][j] = now;
+                board[i][j] = new Node(tmp);
             }
         }
 
@@ -59,9 +56,9 @@ public class Main {
             int c = Integer.parseInt(st.nextToken());
             int d = Integer.parseInt(st.nextToken());
 
-            int J = board[c][d].J - board[c][b - 1].J - board[a - 1][d].J + board[a - 1][b - 1].J;
-            int O = board[c][d].O - board[c][b - 1].O - board[a - 1][d].O + board[a - 1][b - 1].O;
-            int I = board[c][d].I - board[c][b - 1].I - board[a - 1][d].I + board[a - 1][b - 1].I;
+            int J = board[c][d].cnt[0] - board[c][b - 1].cnt[0] - board[a - 1][d].cnt[0] + board[a - 1][b - 1].cnt[0];
+            int O = board[c][d].cnt[1] - board[c][b - 1].cnt[1] - board[a - 1][d].cnt[1] + board[a - 1][b - 1].cnt[1];
+            int I = board[c][d].cnt[2] - board[c][b - 1].cnt[2] - board[a - 1][d].cnt[2] + board[a - 1][b - 1].cnt[2];
 
             sb.append(J + " " + O + " " + I).append("\n");
         }
