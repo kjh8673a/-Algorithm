@@ -42,12 +42,12 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int[] arr = new int[1_000_001];
+        int[] arr = new int[1_000_001]; // 첫번째 줄 숫자의 인덱스를 저장
         for (int i = 1; i < N + 1; i++) {
             arr[Integer.parseInt(st.nextToken())] = i;
         }
 
-        int[] index = new int[N + 1];
+        int[] index = new int[N + 1]; // 두번째 줄 숫자가 첫번째줄에서 어디에 위치해있는지
         st = new StringTokenizer(br.readLine());
         for (int i = 1; i < N + 1; i++) {
             index[i] = arr[Integer.parseInt(st.nextToken())];
@@ -57,7 +57,7 @@ public class Main {
 
         long ans = 0;
         for (int i = 1; i < N + 1; i++) {
-            ans += seg.sum(1, 1, N, index[i] + 1, N);
+            ans += seg.sum(1, 1, N, index[i], N);
             seg.update(1, 1, N, index[i], 1);
         }
 
