@@ -1,70 +1,121 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	static List<Integer>[] list;
-	static int[] cnt;
-	static int n, m;
-	static boolean[] visit;
+    static int N, M, id, groupId;
+    static int[] d, group;
+    static ArrayList<ArrayList<Integer>> graph;
+    static ArrayList<TreeSet<Integer>> SCC;
+    static ArrayList<Set<Integer>> groupGraph;
+    static boolean[] finished, visitedGroup;
+    static Stack<Integer> stack = new Stack<>();
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        graph = new ArrayList<>();
+        SCC = new ArrayList<>();
+        for (int i = 0; i < N + 1; i++) {
+            graph.add(new ArrayList<>());
+        }
 
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            graph.get(b).add(a);
+        }
 
-		list = new ArrayList[n+1];
+        d = new int[N + 1];
+        id = 0;
+        groupId = 0;
+        group = new int[N + 1];
+        finished = new boolean[N + 1];
+        for (int i = 1; i < N + 1; i++) {
+            if (d[i] == 0) {
+                dfs(i);
+            }
+        }
 
-		for(int i = 0; i < n; i++) {
-			list[i] = new ArrayList<>();
-		}
+        groupGraph = new ArrayList<>();
+        for (int i = 0; i < groupId; i++) {
+            groupGraph.add(new HashSet<>());
+        }
 
-		for(int i = 0; i < m; i++) {
-			st = new StringTokenizer(br.readLine());
-			int a = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-			list[a-1].add(b-1);
-		}
+        int[] groupInDegree = new int[groupId];
+        for (int i = 1; i < N + 1; i++) {
+            for (int next : graph.get(i)) {
+                if (group[i] != group[next] && !groupGraph.get(group[i]).contains(group[next])) {
+                    groupInDegree[group[next]]++;
+                    groupGraph.get(group[i]).add(group[next]);
+                }
+            }
+        }
 
-		cnt = new int[n];
+        int[] groupResult = new int[groupId];
+        int max = 0;
+        for (int i = 0; i < groupId; i++) {
+            if (groupInDegree[i] == 0) {
+                visitedGroup = new boolean[groupId];
+                groupResult[i] = groupCount(i);
+                max = Math.max(max, groupResult[i]);
+            }
+        }
 
-		for(int i = 0; i < n; i++) {
-			visit = new boolean[n];
-			dfs(i);
-		}
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < groupId; i++) {
+            if (groupResult[i] == max) {
+                for (Integer node : SCC.get(i)) {
+                    sb.append(node + " ");
+                }
+            }
+        }
 
-		int max = 0;
-		for(int i = 0; i < n; i++) {
-			if(cnt[i] > max) {
-				max = cnt[i];
-			}
-		}
+        System.out.println(sb);
+    }
 
-		for(int i = 0; i < n; i++) {
-			if(cnt[i] == max) {
-				sb.append((i+1) + " ");
-			}
-		}
+    private static int groupCount(int x) {
+        visitedGroup[x] = true;
+        int count = SCC.get(x).size();
+        for (int next : groupGraph.get(x)) {
+            if (!visitedGroup[next]) {
+                count += groupCount(next);
+            }
+        }
 
-		System.out.println(sb.toString());
+        return count;
+    }
 
-	}
+    private static int dfs(int x) {
+        d[x] = ++id;
+        stack.push(x);
 
-	public static void dfs(int idx) {
-		visit[idx] = true;
+        int root = d[x];
+        for (int next : graph.get(x)) {
+            if (d[next] == 0) {
+                root = Math.min(root, dfs(next));
+            } else if (!finished[next]) {
+                root = Math.min(root, d[next]);
+            }
+        }
 
-		for(int i : list[idx]) {
-			if(!visit[i]) {
-				cnt[i]++;
-				dfs(i);
-			}
-		}
-	}
+        if (root == d[x]) {
+            SCC.add(new TreeSet<>());
+            while (!stack.isEmpty()) {
+                int node = stack.pop();
+                SCC.get(groupId).add(node);
+                group[node] = groupId;
+                finished[node] = true;
+                if (node == x) {
+                    break;
+                }
+            }
+            groupId++;
+        }
+
+        return root;
+    }
 
 }
