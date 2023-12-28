@@ -40,7 +40,12 @@ public class Main {
             }
         }
 
-        Arrays.stream(answer).forEach(num -> System.out.print(num + " "));
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < N; i++) {
+            sb.append(answer[i] + " ");
+        }
+
+        System.out.println(sb);
     }
 
 }
