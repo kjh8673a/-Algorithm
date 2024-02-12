@@ -13,7 +13,7 @@ class Solution {
         
         public int init(int[] arr, int node, int start, int end) {
             if(start == end) {
-                return tree[node] = arr[start];
+                return tree[node] = arr[start - 1];
             } else {
                 return tree[node] = Math.max(init(arr, node * 2, start, (start + end) / 2), init(arr, node * 2 + 1, (start + end) / 2 + 1, end));
             }
@@ -34,13 +34,8 @@ class Solution {
     
     public int solution(int[] stones, int k) {
         int len = stones.length;
-        int[] arr = new int[len + 1];
-        for(int i = 1; i < len + 1; i++) {
-            arr[i] = stones[i - 1];
-        }
-        
         SegmentTree seg = new SegmentTree(len);
-        seg.init(arr, 1, 1, len);
+        seg.init(stones, 1, 1, len);
         
         int answer = 200_000_001;
         for(int i = 1; i <= len + 1 - k; i++) {
