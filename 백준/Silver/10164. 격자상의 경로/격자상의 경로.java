@@ -9,8 +9,8 @@ public class Main {
         int m = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
         if (k > 0) {
-            int nr = k / m;
-            int nc = k % m - 1;
+            int nr = (k - 1) / m;
+            int nc = (k - 1) % m;
             System.out.println(doDp(nr + 1, nc + 1) * doDp(n - nr, m - nc));
 
         } else {
