@@ -67,9 +67,13 @@ public class Main {
         int px = findSet(p);
         int py = findSet(q);
 
-        countries[px] = py;
-        troops[py] += troops[px];
-
+        if (troops[px] > troops[py]) {
+            countries[py] = px;
+            troops[px] += troops[py];
+        } else {
+            countries[px] = py;
+            troops[py] += troops[px];
+        }
     }
 
     private static int findSet(int x) {
