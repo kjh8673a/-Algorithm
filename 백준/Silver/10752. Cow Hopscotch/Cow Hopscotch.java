@@ -2,16 +2,14 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int r, c;
-    static char[][] board;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        r = Integer.parseInt(st.nextToken());
-        c = Integer.parseInt(st.nextToken());
+        int r = Integer.parseInt(st.nextToken());
+        int c = Integer.parseInt(st.nextToken());
 
-        board = new char[r][c];
+        char[][] board = new char[r][c];
         for (int i = 0; i < r; i++) {
             String line = br.readLine();
             for (int j = 0; j < c; j++) {
@@ -19,27 +17,24 @@ public class Main {
             }
         }
 
-        int answer = jump(0, 0);
+        int[][] dp = new int[r][c];
+        dp[0][0] = 1;
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (dp[i][j] == 0) {
+                    continue;
+                }
 
-        System.out.println(answer);
-    }
-
-    private static int jump(int a, int b) {
-        if (a == r - 1 && b == c - 1) {
-            return 1;
-        }
-
-        char type = board[a][b];
-        int result = 0;
-        for (int i = a + 1; i < r; i++) {
-            for (int j = b + 1; j < c; j++) {
-                if (type != board[i][j]) {
-                    result += jump(i, j);
+                for (int k = i + 1; k < r; k++) {
+                    for (int l = j + 1; l < c; l++) {
+                        if (board[k][l] != board[i][j]) {
+                            dp[k][l] += dp[i][j];
+                        }
+                    }
                 }
             }
         }
 
-        return result;
+        System.out.println(dp[r - 1][c - 1]);
     }
-
 }
