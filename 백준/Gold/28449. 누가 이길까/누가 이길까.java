@@ -43,7 +43,7 @@ public class Main {
                 }
             }
 
-            left = 0;
+            left = Math.max(0, drawStart - 1);
             right = m - 1;
             while (left <= right) {
                 int mid = (left + right) / 2;
