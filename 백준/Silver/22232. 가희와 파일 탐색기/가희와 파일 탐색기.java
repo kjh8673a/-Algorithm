@@ -1,0 +1,44 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+
+        String[][] file = new String[n][2];
+        for (int i = 0; i < n; i++) {
+            String[] tmp = br.readLine().split("\\.");
+            file[i][0] = tmp[0];
+            file[i][1] = tmp[1];
+        }
+
+        Set<String> extension = new HashSet<>();
+        for (int i = 0; i < m; i++) {
+            extension.add(br.readLine());
+        }
+
+        Arrays.sort(file, new Comparator<String[]>() {
+            @Override
+            public int compare(String[] o1, String[] o2) {
+                if (o1[0].equals(o2[0])) {
+                    if (extension.contains(o1[1]) == extension.contains(o2[1])) {
+                        return o1[1].compareTo(o2[1]);
+                    }
+                    int a = extension.contains(o1[1]) ? 0 : 1;
+                    int b = extension.contains(o2[1]) ? 0 : 1;
+                    return Integer.compare(a, b);
+                }
+                return o1[0].compareTo(o2[0]);
+            }
+        });
+
+        StringBuilder sb = new StringBuilder();
+        Arrays.stream(file).forEach(o -> sb.append(o[0] + "." + o[1]).append("\n"));
+
+        System.out.println(sb);
+    }
+
+}
