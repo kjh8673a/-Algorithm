@@ -10,9 +10,9 @@ public class Main {
 
         String[][] file = new String[n][2];
         for (int i = 0; i < n; i++) {
-            String[] tmp = br.readLine().split("\\.");
-            file[i][0] = tmp[0];
-            file[i][1] = tmp[1];
+            st = new StringTokenizer(br.readLine(), ".");
+            file[i][0] = st.nextToken();
+            file[i][1] = st.nextToken();
         }
 
         Set<String> extension = new HashSet<>();
