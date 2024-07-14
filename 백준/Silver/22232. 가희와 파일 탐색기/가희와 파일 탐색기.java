@@ -26,10 +26,11 @@ public class Main {
                 if (o1[0].equals(o2[0])) {
                     if (extension.contains(o1[1]) == extension.contains(o2[1])) {
                         return o1[1].compareTo(o2[1]);
+                    } else if (extension.contains(o1[1])) {
+                        return -1;
+                    } else {
+                        return 1;
                     }
-                    int a = extension.contains(o1[1]) ? 0 : 1;
-                    int b = extension.contains(o2[1]) ? 0 : 1;
-                    return Integer.compare(a, b);
                 }
                 return o1[0].compareTo(o2[0]);
             }
