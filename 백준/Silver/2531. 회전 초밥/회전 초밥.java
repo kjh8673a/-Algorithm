@@ -1,57 +1,57 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
         int d = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
         int c = Integer.parseInt(st.nextToken());
 
-        int[] arr = new int[N];
-        int[] visit = new int[d + 1];
-
-        for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
+        int[] sushiQueue = new int[n];
+        for (int i = 0; i < n; i++) {
+            sushiQueue[i] = Integer.parseInt(br.readLine());
         }
 
-        int cnt = 0;
-        for (int i = 0; i < k; i++) {
-            if (visit[arr[i]] == 0) {
-                cnt++;
+        int[] checkSushi = new int[d + 1];
+        int count = 0;
+        for (int i = n - k; i < n; i++) {
+            if (++checkSushi[sushiQueue[i]] == 1) {
+                count++;
             }
-            visit[arr[i]]++;
+        }
+        if (checkSushi[c] == 0) {
+            count++;
         }
 
-        int ans = cnt;
-
-        for (int i = 0; i < N; i++) {
-            if (ans <= cnt) {
-                if (visit[c] == 0) {
-                    ans = cnt + 1;
-                } else {
-                    ans = cnt;
-                }
+        int answer = count;
+        int prev = n - k;
+        for (int i = 0; i < n; i++) {
+            if (checkSushi[c] == 0) {
+                count--;
             }
 
-            if (visit[arr[i]] == 1) {
-                cnt--;
+            if (++checkSushi[sushiQueue[i]] == 1) {
+                count++;
             }
-            visit[arr[i]]--;
 
-            if (visit[arr[(i + k) % N]] == 0) {
-                cnt++;
+            if (--checkSushi[sushiQueue[prev++]] == 0) {
+                count--;
             }
-            visit[arr[(i + k) % N]]++;
+            if (prev == n) {
+                prev = 0;
+            }
+
+            if (checkSushi[c] == 0) {
+                count++;
+            }
+
+            answer = Math.max(answer, count);
         }
 
-        System.out.println(ans);
-
+        System.out.println(answer);
     }
 
 }
