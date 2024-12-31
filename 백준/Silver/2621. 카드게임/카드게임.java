@@ -1,186 +1,118 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static Map<String, Integer> color;
-    static Map<Integer, Integer> number;
-    static int ans;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        color = new HashMap<>();
-        number = new HashMap<>();
-        for(int i = 0; i < 5; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            String col = st.nextToken();
+        int[][] board = new int[4][10];
+        StringTokenizer st;
+        for (int i = 0; i < 5; i++) {
+            st = new StringTokenizer(br.readLine());
+            char color = st.nextToken().charAt(0);
             int num = Integer.parseInt(st.nextToken());
-            
-            color.put(col, color.getOrDefault(col, 0) + 1);
-            number.put(num, number.getOrDefault(num, 0) + 1);
-        }
-        
-        ans = 0;
-        
-        if(rule1());
-        else if(rule2());
-        else if(rule3());
-        else if(rule4());
-        else if(rule5());
-        else if(rule6());
-        else if(rule7());
-        else if(rule8());
-        else if(rule9());
 
-        System.out.println(ans);
-
-    }
-
-    public static boolean rule1() {
-        if(color.size() == 1 && number.size() == 5) {
-            int tmp = 0;
-            for(int nKey : number.keySet()) {
-                int chk = nKey - tmp;
-                if(tmp != 0 && chk != 1) {
-                    return false;
-                }
-                tmp = nKey;
+            if (color == 'R') {
+                board[0][num]++;
+            } else if (color == 'B') {
+                board[1][num]++;
+            } else if (color == 'Y') {
+                board[2][num]++;
+            } else {
+                board[3][num]++;
             }
-            ans = tmp + 900;
-            return true;
         }
-        return false;
-    }
 
-    public static boolean rule2() {
-        if(number.size() == 2) {
-            int tmp = 0;
-            for(int nKey : number.keySet()) {
-                if(number.get(nKey) != 1 && number.get(nKey) != 4) {
-                    return false;
-                }
-                if(number.get(nKey) == 4) {
-                    tmp = nKey;
+        int red = Arrays.stream(board[0]).sum();
+        int blue = Arrays.stream(board[1]).sum();
+        int yellow = Arrays.stream(board[2]).sum();
+        int green = Arrays.stream(board[3]).sum();
+        if (red == 5 || blue == 5 || yellow == 5 || green == 5) {
+            int max = 0;
+            for (int i = 9; i > 0; i--) {
+                if (board[0][i] + board[1][i] + board[2][i] + board[3][i] == 1) {
+                    max = i;
+                    break;
                 }
             }
-            ans = tmp + 800;
-            return true;
-        }
-        return false;
-    }
 
-    public static boolean rule3() {
-        if(number.size() == 2) {
-            int tmp2 = 0;
-            int tmp3 = 0;
-            for(int nKey : number.keySet()) {
-                if(number.get(nKey) != 2 && number.get(nKey) != 3) {
-                    return false;
-                }
-                if(number.get(nKey) == 3) {
-                    tmp3 = nKey;
-                }
-                if(number.get(nKey) == 2) {
-                    tmp2 = nKey;
+            boolean serial = true;
+            for (int i = max - 1; i >= max - 4; i--) {
+                if (board[0][i] + board[1][i] + board[2][i] + board[3][i] == 0) {
+                    serial = false;
+                    break;
                 }
             }
-            ans = tmp3 * 10 + tmp2 + 700;
-            return true;
-        }
-        return false;
-    }
 
-    public static boolean rule4() {
-        if(color.size() == 1) {
-            int tmp = 0;
-            for(int nKey : number.keySet()) {
-                tmp = nKey;
+            if (serial) {
+                System.out.println(max + 900); // 1
+            } else {
+                System.out.println(max + 600); // 4
             }
-            ans = tmp + 600;
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean rule5() {
-        if(number.size() == 5) {
-            int tmp = 0;
-            for(int nKey : number.keySet()) {
-                int chk = nKey - tmp;
-                if(tmp != 0 && chk != 1) {
-                    return false;
+        } else {
+            int max = 0;
+            int sameFour = 0;
+            int sameThree = 0;
+            List<Integer> sameTwo = new ArrayList<>();
+            for (int i = 9; i > 0; i--) {
+                int sum = board[0][i] + board[1][i] + board[2][i] + board[3][i];
+                if (sum == 4) {
+                    sameFour = i;
+                } else if (sum == 3) {
+                    sameThree = i;
+                } else if (sum == 2) {
+                    sameTwo.add(i);
                 }
-                tmp = nKey;
-            }
-            ans = tmp + 500;
-            return true;
-        }
-        return false;
-    }
 
-    public static boolean rule6() {
-        if(number.size() == 3) {
-            int tmp = 0;
-            for(int nKey : number.keySet()) {
-                if(number.get(nKey) != 3 && number.get(nKey) != 1) {
-                    return false;
-                }
-                if(number.get(nKey) == 3) {
-                    tmp = nKey;
+                if (sum >= 1) {
+                    max = Math.max(max, i);
                 }
             }
-            ans = tmp + 400;
-            return true;
-        }
-        return false;
-    }
 
-    public static boolean rule7() {
-        if(number.size() == 3) {
-            int tmp = 0;
-            int tmp2 = 0;
-            for(int nKey : number.keySet()) {
-                if(number.get(nKey) != 2 && number.get(nKey) != 1) {
-                    return false;
+            if (sameFour != 0) {
+                System.out.println(sameFour + 800); // 2
+                return;
+            }
+
+            if (sameThree != 0) {
+                if (sameTwo.size() != 0) {
+                    System.out.println(sameThree * 10 + sameTwo.get(0) + 700); // 3
+                } else {
+                    System.out.println(sameThree + 400); // 6
                 }
-                if(number.get(nKey) == 2) {
-                    if(tmp != 0) {
-                        tmp2 = nKey;
-                    }else {
-                        tmp = nKey;
-                    }
+                return;
+            }
+
+            if (sameTwo.size() == 2) {
+                int a = Math.max(sameTwo.get(0), sameTwo.get(1));
+                int b = Math.min(sameTwo.get(0), sameTwo.get(1));
+                System.out.println(a * 10 + b + 300); // 7
+                return;
+            }
+
+            if (sameTwo.size() == 1) {
+                System.out.println(sameTwo.get(0) + 200); // 8
+                return;
+            }
+
+            boolean serial = true;
+            for (int i = max - 1; i >= max - 4; i--) {
+                if (board[0][i] + board[1][i] + board[2][i] + board[3][i] == 0) {
+                    serial = false;
+                    break;
                 }
             }
-            ans = tmp2 * 10 + tmp + 300;
-            return true;
-        }
-        return false;
-    }
 
-    public static boolean rule8() {
-        if(number.size() == 4) {
-            int tmp = 0;
-            for(int nKey : number.keySet()) {
-                if(number.get(nKey) == 2) {
-                    tmp = nKey;
-                }
+            if (serial) {
+                System.out.println(max + 500); // 5
+                return;
             }
-            ans = tmp + 200;
-            return true;
-        }
-        return false;
-    }
 
-    public static boolean rule9() {
-        int tmp = 0;
-        for(int nKey : number.keySet()) {
-            tmp = nKey;
+            else {
+                System.out.println(max + 100); // 9
+                return;
+            }
         }
-        ans = tmp + 100;
-        return true;
     }
-
 }
