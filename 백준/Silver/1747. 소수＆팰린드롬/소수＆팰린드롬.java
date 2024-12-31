@@ -1,43 +1,43 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Main {
-
-    public static void main(String[] args) throws NumberFormatException, IOException {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         int n = Integer.parseInt(br.readLine());
-
-        for(int i = n; ; i++) {
-            if(isPrime(i) && isPalin(i)) {
-                System.out.println(i);
+        while (true) {
+            if (isPrime(n) && isPalindrome(n)) {
                 break;
             }
+            n++;
         }
-        
+
+        System.out.println(n);
     }
 
-    public static boolean isPrime(int x) {
-        if(x == 1) {
-            return false;
-        }
+    private static boolean isPalindrome(int n) {
+        String str = Integer.toString(n);
 
-        for(int i = 2; i <= Math.sqrt(x); i++) {
-            if(x % i == 0) {
+        int len = str.length();
+        for (int i = 0; i <= len / 2; i++) {
+            if (str.charAt(i) != str.charAt(len - 1 - i)) {
                 return false;
             }
         }
+
         return true;
     }
 
-    public static boolean isPalin(int x) {
-        String str = String.valueOf(x);
-        StringBuilder sb = new StringBuilder(str);
-        if(!str.equals(sb.reverse().toString())) {
+    private static boolean isPrime(int n) {
+        if (n == 1) {
             return false;
         }
+
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+
         return true;
     }
-
 }
