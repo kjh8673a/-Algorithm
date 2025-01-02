@@ -1,9 +1,10 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        HashMap<String, String> map = new HashMap<>() {
+
+    public static void main(String[] args) throws IOException {
+        Map<String, String> map = new HashMap<>() {
             {
                 put("Algorithm", "204");
                 put("DataAnalysis", "207");
@@ -16,13 +17,14 @@ public class Main {
         };
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
+
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < N; i++) {
-            sb.append(map.get(br.readLine())).append("\n");
+        for (int i = 0; i < n; i++) {
+            String s = br.readLine();
+            sb.append(map.get(s)).append("\n");
         }
 
-        System.out.println(sb);
+        System.out.println(sb.toString());
     }
-
 }
