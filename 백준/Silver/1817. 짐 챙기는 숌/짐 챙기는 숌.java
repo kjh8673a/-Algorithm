@@ -1,28 +1,33 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
-		int n = sc.nextInt();
-		int m = sc.nextInt();
+        int answer = 0;
+        if (n > 0) {
+            int sum = 0;
+            st = new StringTokenizer(br.readLine());
+            for (int i = 0; i < n; i++) {
+                int weight = Integer.parseInt(st.nextToken());
+                if (sum + weight > m) {
+                    answer++;
+                    sum = 0;
+                }
 
-		int cnt = 1;
-		if(n == 0) cnt = 0;
-		int sum = 0;
-		for(int i = 0; i < n; i++) {
-			int a = sc.nextInt();
-			if(sum + a <= m) {
-				sum += a;
-			}else {
-				cnt++;
-				sum = a;
-			}
-		}
+                sum += weight;
+            }
 
-		System.out.println(cnt);
+            if (sum != 0) {
+                answer++;
+            }
+        }
 
-		sc.close();
+        System.out.println(answer);
+    }
 
-	}
 }
