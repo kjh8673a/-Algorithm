@@ -1,42 +1,28 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int[] arr = new int[8];
+        for (int i = 0; i < 8; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String answer = "";
+        for (int i = 0; i < 7; i++) {
+            if (arr[i + 1] == arr[i] + 1) {
+                answer = "ascending";
+            } else if (arr[i + 1] == arr[i] - 1) {
+                answer = "descending";
+            } else {
+                answer = "mixed";
+                break;
+            }
+        }
 
-		int[] arr = new int[8];
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < 8; i++) {
-			arr[i] = Integer.parseInt(st.nextToken());
-		}
-
-		String ans = "";
-		for(int i = 1; i < 8 ; i++) {
-			if(arr[i-1] + 1 == arr[i]) {
-				ans = "ascending";
-			}else {
-				ans = "";
-				break;
-			}
-		} 
-
-		if(ans.isEmpty()) {
-			for(int i = 1; i < 8; i++) {
-				if(arr[i-1] - 1 == arr[i]) {
-					ans = "descending";
-				}else {
-					ans = "mixed";
-					break;
-				}
-			}
-		}
-		
-		System.out.println(ans);
-
-	}
+        System.out.println(answer);
+    }
 
 }
