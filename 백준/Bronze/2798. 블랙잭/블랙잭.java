@@ -1,49 +1,42 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
         int[] arr = new int[n];
-
-        for(int i = 0; i < n; i++) {
-            arr[i] = sc.nextInt();
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        sc.close();
+        int answer = 0;
+        loop: for (int i = 0; i < n - 2; i++) {
+            if (arr[i] > m) {
+                continue;
+            }
+            for (int j = i + 1; j < n - 1; j++) {
+                if (arr[i] + arr[j] > m) {
+                    continue;
+                }
+                for (int k = j + 1; k < n; k++) {
+                    int sum = arr[i] + arr[j] + arr[k];
+                    if (sum <= m) {
+                        answer = Math.max(answer, sum);
+                    }
 
-        Arrays.sort(arr);
-        
-        int sum = 0;
-        int min = Integer.MAX_VALUE;
-        int ans = 0;
-
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                if(i != j) {
-                    for(int k = 0; k < n; k++) {
-                        if(i != k && j != k) {
-                            sum = arr[i] + arr[j] + arr[k];
-                            if(sum > m) break;
-                            else if(sum <= m && min != Math.min(min, m-sum)) {
-                                min = Math.min(min, m-sum);
-                                ans = sum;
-                            }
-                        }
+                    if (answer == m) {
+                        break loop;
                     }
                 }
-                
             }
         }
 
-        System.out.println(ans);
-        
-
-
+        System.out.println(answer);
     }
 
 }
