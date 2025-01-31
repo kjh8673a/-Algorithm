@@ -5,13 +5,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        double ab = Double.parseDouble(st.nextToken());
+        double bc = Double.parseDouble(st.nextToken());
+        double cd = Double.parseDouble(st.nextToken());
 
-        int ab = Integer.parseInt(st.nextToken());
-        int bc = Integer.parseInt(st.nextToken());
-        int cd = Integer.parseInt(st.nextToken());
-
-        double da = (double) ab * cd / bc;
-        System.out.println(String.format("%6f", da));
+        System.out.println(ab * cd / bc);
     }
 
 }
