@@ -1,60 +1,55 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws NumberFormatException, IOException {
+    static int sum, idx;
+
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
 
-        Map<Integer, Double> map = new HashMap<>();
-        double[] count = new double[n];
-        
-        for(int i = 0; i < n; i++) {
+        int[][] table = new int[n][4];
+        for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            int num = Integer.parseInt(st.nextToken());
-            int gold = Integer.parseInt(st.nextToken());
-            int silver = Integer.parseInt(st.nextToken());
-            int bronze = Integer.parseInt(st.nextToken());
-
-            double score = gold * Math.pow(10, 6) + silver + bronze * Math.pow(10, -6);
-
-            map.put(num, score);
-            count[i] = score;
+            table[i][0] = Integer.parseInt(st.nextToken());
+            table[i][1] = Integer.parseInt(st.nextToken());
+            table[i][2] = Integer.parseInt(st.nextToken());
+            table[i][3] = Integer.parseInt(st.nextToken());
         }
 
-        Double[] tmp = Arrays.stream(count).boxed().toArray(Double[]::new);
-        Arrays.sort(tmp, Comparator.reverseOrder());
+        Arrays.sort(table, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o2[1] == o1[1]) {
+                    if (o2[2] == o1[2]) {
+                        return o2[3] - o1[3];
+                    }
+                    return o2[2] - o1[2];
+                }
+                return o2[1] - o1[1];
+            }
+        });
 
-        if(map.get(k).equals(tmp[0])) {
-            System.out.println(1);
-        }else {
-            int rank = 1;
-            int keep = 1;
-            for(int i = 1; i < n; i++) {
-                if(!tmp[i].equals(tmp[i-1])) {
-                    rank += keep;
-                    keep = 0;
-                    keep++;
-                }else {
-                    keep++;
-                }
-                if(map.get(k).equals(tmp[i])) {
-                    System.out.println(rank);
-                    break;
-                }
+        int answer = 1;
+        int g = table[0][1];
+        int s = table[0][2];
+        int b = table[0][3];
+        for (int i = 1; i < n && table[0][0] != k; i++) {
+            if (g != table[i][1] || s != table[i][2] || b != table[i][3]) {
+                g = table[i][1];
+                s = table[i][2];
+                b = table[i][3];
+                answer++;
+            }
+
+            if (table[i][0] == k) {
+                break;
             }
         }
 
+        System.out.println(answer);
     }
 
 }
