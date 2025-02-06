@@ -32,17 +32,18 @@ public class Main {
             }
         });
 
-        int answer = 1;
-        int g = table[0][1];
-        int s = table[0][2];
-        int b = table[0][3];
-        for (int i = 1; i < n && table[0][0] != k; i++) {
+        int answer = 0;
+        int g = 0;
+        int s = 0;
+        int b = 0;
+        for (int i = 0; i < n; i++) {
+
             if (g != table[i][1] || s != table[i][2] || b != table[i][3]) {
-                g = table[i][1];
-                s = table[i][2];
-                b = table[i][3];
-                answer++;
+                answer = i + 1;
             }
+            g = table[i][1];
+            s = table[i][2];
+            b = table[i][3];
 
             if (table[i][0] == k) {
                 break;
