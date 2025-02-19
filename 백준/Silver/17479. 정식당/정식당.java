@@ -31,7 +31,6 @@ public class Main {
 
         long normal = 0;
         long special = 0;
-        int special_count = 0;
         int service_count = 0;
         int n = Integer.parseInt(br.readLine());
         for (int i = 0; i < n; i++) {
@@ -40,14 +39,13 @@ public class Main {
                 normal += normal_menu.get(order);
             } else if (special_menu.containsKey(order)) {
                 special += special_menu.get(order);
-                special_count++;
             } else {
                 service_count++;
             }
         }
 
         if (normal < 20000) {
-            if (special_count > 0 || service_count > 0) {
+            if (special > 0 || service_count > 0) {
                 System.out.println("No");
             } else {
                 System.out.println("Okay");
