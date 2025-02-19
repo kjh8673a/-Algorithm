@@ -2,66 +2,62 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int n;
-    static ArrayList<ArrayList<Integer>> list;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
         int a = Integer.parseInt(st.nextToken());
         int b = Integer.parseInt(st.nextToken());
 
-        int m = Integer.parseInt(br.readLine());
-        list = new ArrayList<>();
-        for (int i = 0; i < n + 1; i++) {
-            list.add(new ArrayList<>());
+        ArrayList<Integer>[] children = new ArrayList[n + 1];
+        for (int i = 0; i <= n; i++) {
+            children[i] = new ArrayList<>();
         }
+        int[] parent = new int[n + 1];
 
+        int m = Integer.parseInt(br.readLine());
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
-            list.get(x).add(y);
-            list.get(y).add(x);
+            children[x].add(y);
+            parent[y] = x;
         }
 
-        int answer = bfs(a, b);
-
-        System.out.println(answer);
-    }
-
-    private static int bfs(int a, int b) {
         Queue<Integer> queue = new LinkedList<>();
         queue.add(a);
-
         boolean[] visited = new boolean[n + 1];
         visited[a] = true;
 
+        boolean flag = false;
         int depth = 0;
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
+        loop: while (!queue.isEmpty()) {
+            int len = queue.size();
+            for (int i = 0; i < len; i++) {
                 int node = queue.poll();
 
                 if (node == b) {
-                    return depth;
+                    flag = true;
+                    break loop;
                 }
 
-                for (int next : list.get(node)) {
-                    if (visited[next]) {
-                        continue;
-                    }
+                int p = parent[node];
+                if (!visited[p]) {
+                    queue.add(p);
+                    visited[p] = true;
+                }
 
-                    visited[next] = true;
-                    queue.add(next);
+                for (int c : children[node]) {
+                    if (!visited[c]) {
+                        queue.add(c);
+                        visited[c] = true;
+                    }
                 }
             }
-
             depth++;
         }
 
-        return -1;
+        System.out.println(flag ? depth : -1);
     }
 
 }
