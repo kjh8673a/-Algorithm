@@ -1,14 +1,18 @@
-# [Silver V] 점프왕 쩰리 (Small) - 16173 
+# [Silver IV] 점프왕 쩰리 (Small) - 16173 
 
 [문제 링크](https://www.acmicpc.net/problem/16173) 
 
 ### 성능 요약
 
-메모리: 17692 KB, 시간: 204 ms
+메모리: 14220 KB, 시간: 104 ms
 
 ### 분류
 
-너비 우선 탐색(bfs), 브루트포스 알고리즘(bruteforcing), 깊이 우선 탐색(dfs), 그래프 이론(graphs), 그래프 탐색(graph_traversal), 구현(implementation)
+너비 우선 탐색, 브루트포스 알고리즘, 깊이 우선 탐색, 그래프 이론, 그래프 탐색, 구현
+
+### 제출 일자
+
+2025년 2월 19일 12:18:44
 
 ### 문제 설명
 

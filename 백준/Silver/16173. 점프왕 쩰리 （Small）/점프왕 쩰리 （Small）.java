@@ -1,52 +1,47 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int n;
-    static int[][] arr;
-    static boolean[][] visit;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
 
-        n = sc.nextInt();
-
-        arr = new int[n][n];
-        visit = new boolean[n][n];
-
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                arr[i][j] = sc.nextInt();
+        int[][] board = new int[n][n];
+        StringTokenizer st;
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < n; j++) {
+                board[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        sc.close();
 
-        dfs(0,0);
-        System.out.println("Hing");
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[] { 0, 0 });
+        boolean[][] visited = new boolean[n][n];
+        visited[0][0] = true;
+        boolean flag = false;
 
-    }
+        while (!queue.isEmpty()) {
+            int[] node = queue.poll();
+            int jump = board[node[0]][node[1]];
 
-    private static void dfs(int a, int b) {
-        int point = arr[a][b];
-        if(point == -1) {
-            System.out.println("HaruHaru");
-            System.exit(0);
+            if (node[0] == n - 1 && node[1] == n - 1) {
+                flag = true;
+                break;
+            }
+
+            if (node[0] + jump < n && node[1] < n && !visited[node[0] + jump][node[1]]) {
+                queue.add(new int[] { node[0] + jump, node[1] });
+                visited[node[0] + jump][node[1]] = true;
+            }
+
+            if (node[0] < n && node[1] + jump < n && !visited[node[0]][node[1] + jump]) {
+                queue.add(new int[] { node[0], node[1] + jump });
+                visited[node[0]][node[1] + jump] = true;
+            }
         }
 
-        for(int i = 0; i < 2; i++) {
-            visit[a][b] = true;
-            int newa = a + point;
-            if(newa < 0 || newa >= n) continue;
-            if(visit[newa][b]) continue;
-            dfs(newa,b);
-        }
-
-        for(int i = 0; i < 2; i++) {
-            visit[a][b] = true;
-            int newb = b + point;
-            if(newb < 0 || newb >= n) continue;
-            if(visit[a][newb]) continue;
-            dfs(a,newb);
-        }
-
+        System.out.println(flag ? "HaruHaru" : "Hing");
     }
 
 }
