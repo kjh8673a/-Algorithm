@@ -16,13 +16,10 @@ public class Main {
         Arrays.sort(items);
 
         int answer = 0;
-        for (int item : items) {
-            if (p < 200) {
-                answer++;
-                p += item;
-            } else {
-                break;
-            }
+        int idx = 0;
+        while (p < 200 && idx < n) {
+            answer++;
+            p += items[idx++];
         }
 
         System.out.println(answer);
