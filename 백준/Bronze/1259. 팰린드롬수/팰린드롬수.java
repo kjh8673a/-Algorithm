@@ -1,32 +1,31 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws NumberFormatException, IOException {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         StringBuilder sb = new StringBuilder();
-
-        while(true) {
-            String num = br.readLine();
-
-            if(num.equals("0")) {
+        while (true) {
+            int[] arr = Arrays.stream(br.readLine().split("")).mapToInt(Integer::parseInt).toArray();
+            if (arr[0] == 0) {
                 break;
             }
 
-            StringBuilder sbr = new StringBuilder(num);
-
-            String palin = sbr.reverse().toString();
-
-            if(num.equals(palin)) {
-                sb.append("yes").append("\n");
-            }else {
-                sb.append("no").append("\n");
-            }
+            sb.append(isPalindrome(arr) ? "yes" : "no").append("\n");
         }
 
         System.out.println(sb.toString());
-        
+    }
+
+    private static boolean isPalindrome(int[] arr) {
+        for (int i = 0; i < arr.length / 2; i++) {
+            if (arr[i] != arr[arr.length - 1 - i]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }
