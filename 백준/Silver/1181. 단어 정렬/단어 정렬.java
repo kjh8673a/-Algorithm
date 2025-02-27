@@ -1,45 +1,33 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-
-    public static void main(String[] args) throws NumberFormatException, IOException {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-
         int n = Integer.parseInt(br.readLine());
 
-        Map<Double, String> map = new HashMap<>();
+        PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                if (o1.length() == o2.length()) {
+                    return o1.compareTo(o2);
+                }
+                return Integer.compare(o1.length(), o2.length());
+            }
+        });
 
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             String word = br.readLine();
-            double key = (double) word.length();
-            for(int j = 0; j < word.length(); j++) {
-                key += (word.toUpperCase().charAt(j)-0) * Math.pow(0.01, j+1);
-            }
-            map.put(key, word);
-        }
-
-        double[] arr = new double[n];
-        int idx = 0;
-        for(Double nKey : map.keySet()) {
-            arr[idx++] = nKey;
-        }
-
-        Arrays.sort(arr);
-
-        for(int i = 0; i < arr.length; i++) {
-            if(map.containsKey(arr[i])) {
-                sb.append(map.get(arr[i])).append("\n");
+            if (!pq.contains(word)) {
+                pq.add(word);
             }
         }
-        
+
+        StringBuilder sb = new StringBuilder();
+        while (!pq.isEmpty()) {
+            sb.append(pq.poll()).append("\n");
+        }
+
         System.out.println(sb.toString());
     }
-
 }
