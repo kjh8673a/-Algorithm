@@ -1,24 +1,21 @@
-import java.util.Scanner;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        int n = sc.nextInt();
-
-        sc.close();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
 
         int num = 666;
-        int cnt = 1;
+        int idx = 1;
 
-        while(cnt != n) {
+        while (idx < n) {
             num++;
-            if(String.valueOf(num).contains("666")) {
-                cnt++;
+            if (String.valueOf(num).contains("666")) {
+                idx++;
             }
         }
 
         System.out.println(num);
-       
     }
+
 }
