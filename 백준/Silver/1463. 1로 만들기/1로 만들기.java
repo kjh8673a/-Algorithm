@@ -1,35 +1,21 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Main {
-    static int ans = Integer.MAX_VALUE;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         int n = Integer.parseInt(br.readLine());
 
-        cal(n, 0);
-
-        System.out.println(ans);
-    }
-
-    public static void cal(int n, int cnt) {
-
-        if(n == 1) {
-            ans = Math.min(ans, cnt);
-            return ;
+        int[] dp = new int[n + 1];
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + 1;
+            if (i % 3 == 0) {
+                dp[i] = Math.min(dp[i], dp[i / 3] + 1);
+            }
+            if (i % 2 == 0) {
+                dp[i] = Math.min(dp[i], dp[i / 2] + 1);
+            }
         }
 
-        if(cnt >= ans) return;
-
-        if(n % 3 == 0) {
-            cal(n/3, cnt+1);
-        }
-        if(n % 2 == 0) {
-            cal(n/2, cnt+1);
-        }
-        cal(n-1, cnt+1);
-        
+        System.out.println(dp[n]);
     }
 }
