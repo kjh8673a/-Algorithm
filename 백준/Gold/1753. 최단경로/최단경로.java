@@ -1,96 +1,73 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	static int V, E;
-	static List<Edge>[] adjList;
-	static long[] dist;
-	static boolean[] visit;
+    static class Node implements Comparable<Node> {
+        int idx;
+        int cost;
 
-	static class Edge implements Comparable<Edge> {
-		int v;
-		long weight;
+        public Node(int idx, int cost) {
+            this.idx = idx;
+            this.cost = cost;
+        }
 
-		public Edge(int v, long weight) {
-			this.v = v;
-			this.weight = weight;
-		}
+        @Override
+        public int compareTo(Main.Node o) {
+            return Integer.compare(this.cost, o.cost);
+        }
+    }
 
-		@Override
-		public int compareTo(Edge o) {
-			return Long.compare(this.weight, o.weight);
-		}
-	}
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int v = Integer.parseInt(st.nextToken());
+        int e = Integer.parseInt(st.nextToken());
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
+        int k = Integer.parseInt(br.readLine());
 
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		V = Integer.parseInt(st.nextToken());
-		E = Integer.parseInt(st.nextToken());
+        ArrayList<ArrayList<Node>> graph = new ArrayList<>();
+        for (int i = 0; i < v + 1; i++) {
+            graph.add(new ArrayList<>());
+        }
 
-		int start = Integer.parseInt(br.readLine()) - 1;
+        for (int i = 0; i < e; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            int w = Integer.parseInt(st.nextToken());
 
-		adjList = new ArrayList[V];
-		for (int i = 0; i < V; i++) {
-			adjList[i] = new ArrayList<>();
-		}
+            graph.get(a).add(new Node(b, w));
+        }
 
-		for (int i = 0; i < E; i++) {
-			st = new StringTokenizer(br.readLine());
-			int u = Integer.parseInt(st.nextToken()) - 1;
-			int v = Integer.parseInt(st.nextToken()) - 1;
-			int w = Integer.parseInt(st.nextToken());
+        int[] dist = new int[v + 1];
+        for (int i = 0; i < v + 1; i++) {
+            dist[i] = Integer.MAX_VALUE;
+        }
 
-			adjList[u].add(new Edge(v, w));
-		}
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(k, 0));
+        dist[k] = 0;
 
-		dist = new long[V];
-		visit = new boolean[V];
-		Arrays.fill(dist, Integer.MAX_VALUE);
-		dist[start] = 0;
+        while (!pq.isEmpty()) {
+            Node node = pq.poll();
 
-		for (int i = 0; i < V; i++) {
-			long ans = dijkstra(start, i);
-			if (ans == Integer.MAX_VALUE) {
-				sb.append("INF").append("\n");
-			} else {
-				sb.append(ans).append("\n");
-			}
+            if (dist[node.idx] < node.cost) {
+                continue;
+            }
 
-		}
+            for (Node next : graph.get(node.idx)) {
+                if (dist[next.idx] > node.cost + next.cost) {
+                    dist[next.idx] = node.cost + next.cost;
+                    pq.add(new Node(next.idx, dist[next.idx]));
+                }
+            }
+        }
 
-		System.out.println(sb.toString());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i < v + 1; i++) {
+            sb.append(dist[i] == Integer.MAX_VALUE ? "INF" : dist[i]).append("\n");
+        }
 
-	}
-
-	public static long dijkstra(int st, int ed) {
-		
-		PriorityQueue<Edge> pq = new PriorityQueue<>();
-		pq.offer(new Edge(st, 0));
-		while (!pq.isEmpty()) {
-			Edge curr = pq.poll();
-			if (visit[curr.v])
-				continue;
-			visit[curr.v] = true;
-
-			for (Edge next : adjList[curr.v]) {
-				if (!visit[next.v] && dist[next.v] > dist[curr.v] + next.weight) {
-					dist[next.v] = dist[curr.v] + next.weight;
-					pq.offer(new Edge(next.v, dist[next.v]));
-				}
-			}
-		}
-
-		return dist[ed];
-		
-	}
-
+        System.out.println(sb.toString());
+    }
 }
