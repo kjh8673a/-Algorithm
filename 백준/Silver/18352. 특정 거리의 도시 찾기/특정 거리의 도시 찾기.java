@@ -22,41 +22,47 @@ public class Main {
             graph.get(a).add(b);
         }
 
-        bfs(n, graph, k, x);
-    }
-
-    private static void bfs(int n, ArrayList<ArrayList<Integer>> graph, int k, int x) {
+        boolean[] visited = new boolean[n + 1];
         Queue<Integer> queue = new LinkedList<>();
+        visited[x] = true;
         queue.add(x);
 
-        boolean[] visited = new boolean[n + 1];
-        visited[x] = true;
+        ArrayList<Integer> answer = new ArrayList<>();
 
-        int distance = 0;
-        while (!queue.isEmpty() && distance < k) {
+        int depth = 0;
+        while (!queue.isEmpty()) {
             int len = queue.size();
+
             for (int i = 0; i < len; i++) {
                 int node = queue.poll();
+
+                if (depth == k) {
+                    answer.add(node);
+                    continue;
+                }
 
                 for (int next : graph.get(node)) {
                     if (visited[next]) {
                         continue;
                     }
-
                     visited[next] = true;
                     queue.add(next);
                 }
             }
 
-            distance++;
+            depth++;
         }
 
-        if (queue.size() > 0) {
-            StringBuilder sb = new StringBuilder();
-            queue.stream().sorted().forEach(a -> sb.append(a).append("\n"));
-            System.out.println(sb);
-        } else {
+        if (answer.size() == 0) {
             System.out.println(-1);
+        } else {
+            Collections.sort(answer);
+            StringBuilder sb = new StringBuilder();
+            for (int node : answer) {
+                sb.append(node).append("\n");
+            }
+
+            System.out.println(sb.toString());
         }
     }
 }
