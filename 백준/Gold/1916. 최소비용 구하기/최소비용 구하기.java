@@ -1,92 +1,70 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	static class Node implements Comparable<Node> {
-		int v, weight;
+    static class Node implements Comparable<Node> {
+        int idx;
+        int cost;
 
-		public Node(int v, int weight) {
-			this.v = v;
-			this.weight = weight;
-		}
+        public Node(int idx, int cost) {
+            this.idx = idx;
+            this.cost = cost;
+        }
 
-		@Override
-		public int compareTo(Node o) {
-			return Integer.compare(this.weight, o.weight);
-		}
-	}
+        @Override
+        public int compareTo(Node o) {
+            return Integer.compare(this.cost, o.cost);
+        }
+    }
 
-	static final int INF = Integer.MAX_VALUE;
-	static int n, m, start, end;
-	static List<Node>[] adjList;
-	static int[] dist;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int m = Integer.parseInt(br.readLine());
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        ArrayList<ArrayList<Node>> graph = new ArrayList<>();
+        for (int i = 0; i < n + 1; i++) {
+            graph.add(new ArrayList<>());
+        }
 
-		// 정점의 개수
-		n = Integer.parseInt(br.readLine());
-		// 간선의 개수
-		m = Integer.parseInt(br.readLine());
+        StringTokenizer st;
+        for (int i = 0; i < m; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
 
-		adjList = new ArrayList[n];
-		for (int i = 0; i < n; i++) {
-			adjList[i] = new ArrayList<>();
-		}
+            graph.get(a).add(new Node(b, c));
+        }
 
-		dist = new int[n];
-		Arrays.fill(dist, INF);
+        st = new StringTokenizer(br.readLine());
+        int start = Integer.parseInt(st.nextToken());
+        int end = Integer.parseInt(st.nextToken());
 
-		StringTokenizer st;
-		for (int i = 0; i < m; i++) {
-			st = new StringTokenizer(br.readLine());
-			int a = Integer.parseInt(st.nextToken()) - 1;
-			int b = Integer.parseInt(st.nextToken()) - 1;
-			int w = Integer.parseInt(st.nextToken());
+        int[] dist = new int[n + 1];
+        for (int i = 0; i < n + 1; i++) {
+            dist[i] = Integer.MAX_VALUE;
+        }
 
-			adjList[a].add(new Node(b, w));
-		}
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(start, 0));
+        dist[start] = 0;
 
-		st = new StringTokenizer(br.readLine());
-		start = Integer.parseInt(st.nextToken()) - 1;
-		end = Integer.parseInt(st.nextToken()) - 1;
+        while (!pq.isEmpty()) {
+            Node node = pq.poll();
 
-		dijkstra(start);
+            if (dist[node.idx] < node.cost) {
+                continue;
+            }
 
-		System.out.println(dist[end]);
+            for (Node next : graph.get(node.idx)) {
+                if (dist[next.idx] > node.cost + next.cost) {
+                    dist[next.idx] = node.cost + next.cost;
+                    pq.add(new Node(next.idx, dist[next.idx]));
+                }
+            }
+        }
 
-	}
-
-	public static void dijkstra(int st) {
-		PriorityQueue<Node> pq = new PriorityQueue<>();
-
-		boolean[] visit = new boolean[n];
-		pq.offer(new Node(st, 0));
-		dist[st] = 0;
-
-		while (!pq.isEmpty()) {
-			Node curr = pq.poll();
-
-			if (visit[curr.v]) {
-				continue;
-			}
-
-			visit[curr.v] = true;
-
-			for (Node node : adjList[curr.v]) {
-				if (!visit[node.v] && dist[node.v] > dist[curr.v] + node.weight) {
-					dist[node.v] = dist[curr.v] + node.weight;
-					pq.add(new Node(node.v, dist[node.v]));
-				}
-			}
-		}
-	}
-
+        System.out.println(dist[end]);
+    }
 }
