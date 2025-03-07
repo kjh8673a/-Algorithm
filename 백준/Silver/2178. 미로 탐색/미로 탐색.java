@@ -1,77 +1,59 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
+    static int[][] vector = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
 
-	static int n, m, ans;
-	static int[][] map;
-	static int[] dr = {1, -1, 0, 0};
-	static int[] dc = {0, 0, 1, -1};
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
-	static class Node {
-		int r, c;
+        boolean[][] maze = new boolean[n][m];
+        for (int i = 0; i < n; i++) {
+            String line = br.readLine();
+            for (int j = 0; j < m; j++) {
+                if (line.charAt(j) == '1') {
+                    maze[i][j] = true;
+                }
+            }
+        }
 
-		Node(int r, int c) {
-			this.r = r;
-			this.c = c;
-		}
-	}
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[] { 0, 0 });
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
+        int depth = 1;
+        loop: while (!queue.isEmpty()) {
+            int len = queue.size();
 
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
+            for (int i = 0; i < len; i++) {
+                int[] node = queue.poll();
 
-		map = new int[n][m];
+                if (node[0] == n - 1 && node[1] == m - 1) {
+                    break loop;
+                }
 
-		for(int i = 0; i < n; i++) {
-			String s = br.readLine();
-			for(int j = 0; j < m; j++) {
-				map[i][j] = s.charAt(j) - '0';
-			}
-		}
+                for (int k = 0; k < 4; k++) {
+                    int nr = node[0] + vector[k][0];
+                    int nc = node[1] + vector[k][1];
 
-		ans = 0;
-		bfs(0,0);
+                    if (nr < 0 || nc < 0 || nr >= n || nc >= m) {
+                        continue;
+                    }
 
-		System.out.println(ans);
+                    if (!maze[nr][nc]) {
+                        continue;
+                    }
 
-	}
+                    maze[nr][nc] = false;
+                    queue.add(new int[] { nr, nc });
+                }
+            }
 
-	public static void bfs(int i, int j) {
-		Queue<Node> queue = new LinkedList<>();
+            depth++;
+        }
 
-		queue.add(new Node(i, j));
-		map[i][j] = 2;
-
-		while(!queue.isEmpty()) {
-
-			Node node = queue.poll();
-
-			int newr = node.r;
-			int newc = node.c;
-
-			if(newr == n-1 && newc == m-1) {
-				ans = map[newr][newc] - 1;
-			}
-
-			for(int k = 0; k < 4; k++) {
-				int nr = newr + dr[k];
-				int nc = newc + dc[k];
-
-				if(nr >= 0 && nc >= 0 && nr < n && nc < m && map[nr][nc] == 1) {
-					map[nr][nc] = map[newr][newc] + 1;
-					queue.add(new Node(nr, nc));
-				}
-			}
-
-		}
-	}
-	
+        System.out.println(depth);
+    }
 }
