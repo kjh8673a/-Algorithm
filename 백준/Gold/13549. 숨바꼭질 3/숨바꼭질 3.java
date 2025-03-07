@@ -1,63 +1,69 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	static int n, k, finalCnt, size;
-	static int[] check;
-	static StringBuilder sb = new StringBuilder();
+    static class Node implements Comparable<Node> {
+        int idx;
+        int cost;
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        public Node(int idx, int cost) {
+            this.idx = idx;
+            this.cost = cost;
+        }
 
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		k = Integer.parseInt(st.nextToken());
-		size = Math.max(n, k) * 2 + 1;
+        @Override
+        public int compareTo(Node o) {
+            return Integer.compare(this.cost, o.cost);
+        }
 
-		check = new int[size];
-		Arrays.fill(check, -1);
+    }
 
-		bfs(n);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
 
-		System.out.println(sb.toString());
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(n, 0));
 
-	}
+        int[] dist = new int[100001];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[n] = 0;
 
-	public static void bfs(int num) {
-		Queue<Integer> queue = new LinkedList<>();
+        int answer = Integer.MAX_VALUE;
+        while (!pq.isEmpty()) {
+            Node node = pq.poll();
 
-		queue.add(num);
-		check[num] = 0;
+            if (node.idx == k) {
+                answer = Math.min(answer, node.cost);
+                continue;
+            }
 
-		while (!queue.isEmpty()) {
-			int point = queue.poll();
+            if (node.cost > answer) {
+                continue;
+            }
 
-			if (point == k) {
-				sb.append(check[point]);
-			}
+            if (dist[node.idx] < node.cost) {
+                continue;
+            }
 
-			if (point * 2 < size && check[point * 2] == -1) {
-				check[point * 2] = check[point];
-				queue.add(point * 2);
-			}
+            if (node.idx + 1 <= 100000 && dist[node.idx + 1] > node.cost + 1) {
+                dist[node.idx + 1] = node.cost + 1;
+                pq.add(new Node(node.idx + 1, dist[node.idx + 1]));
+            }
 
-			if (point - 1 >= 0 && check[point - 1] == -1) {
-				check[point - 1] = check[point] + 1;
-				queue.add(point - 1);
-			}
+            if (node.idx - 1 >= 0 && dist[node.idx - 1] > node.cost + 1) {
+                dist[node.idx - 1] = node.cost + 1;
+                pq.add(new Node(node.idx - 1, dist[node.idx - 1]));
+            }
 
-			if (point + 1 < size && check[point + 1] == -1) {
-				check[point + 1] = check[point] + 1;
-				queue.add(point + 1);
-			}
+            if (node.idx * 2 <= 100000 && dist[node.idx * 2] > node.cost) {
+                dist[node.idx * 2] = node.cost;
+                pq.add(new Node(node.idx * 2, dist[node.idx * 2]));
+            }
+        }
 
-		}
-
-	}
-
+        System.out.println(answer);
+    }
 }
