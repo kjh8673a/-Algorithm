@@ -1,52 +1,31 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int n;
-    static int[] arr, dp;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
 
-        n = Integer.parseInt(br.readLine());
-
-        arr = new int[n];
-        dp = new int[n];
-
+        int[] arr = new int[n];
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+            int a = Integer.parseInt(st.nextToken());
+            arr[i] = a;
         }
 
-        for (int i = 0; i < n; i++) {
-            doDp(i);
-        }
-
-        int max = dp[0];
-        for(int i = 0; i < n; i++) {
-            max = Math.max(max, dp[i]);
-        }
-
-        System.out.println(max);
-
-    }
-
-    public static int doDp(int idx) {
-
-        if (dp[idx] == 0) {
-            dp[idx] = 1;
-
-            for (int i = idx - 1; i >= 0; i--) {
-                if (arr[i] < arr[idx]) {
-                    dp[idx] = Math.max(dp[idx], doDp(i) + 1);
+        int answer = 1;
+        int[] dp = new int[n];
+        dp[0] = 1;
+        for (int i = 1; i < n; i++) {
+            dp[i] = 1;
+            for (int j = i; j >= 0; j--) {
+                if (arr[i] > arr[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
                 }
             }
-
+            answer = Math.max(answer, dp[i]);
         }
 
-        return dp[idx];
-
+        System.out.println(answer);
     }
 }
