@@ -1,83 +1,48 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-    static class ParkingLot {
-        int[] spot;
-
-        public ParkingLot(int size) {
-            spot = new int[size];
-        }
-
-        public boolean isEmpty() {
-            for (int i = 0; i < spot.length; i++) {
-                if (spot[i] == 0) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public void enter(int num) {
-            for (int i = 0; i < spot.length; i++) {
-                if (spot[i] == 0) {
-                    spot[i] = num;
-                    return;
-                }
-            }
-        }
-
-        public int out(int num) {
-            int price = 0;
-            for (int i = 0; i < spot.length; i++) {
-                if (spot[i] == num) {
-                    price = costPerUnit[i] * car[num];
-                    spot[i] = 0;
-                    break;
-                }
-            }
-
-            return price;
-        }
-    }
-
-    static int[] costPerUnit;
-    static int[] car;
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
-        costPerUnit = new int[N];
-        for (int i = 0; i < N; i++) {
-            costPerUnit[i] = Integer.parseInt(br.readLine());
+        PriorityQueue<Integer> empty_space = new PriorityQueue<>();
+        int[] fare = new int[n + 1];
+        for (int i = 1; i < n + 1; i++) {
+            fare[i] = Integer.parseInt(br.readLine());
+            empty_space.add(i);
         }
 
-        car = new int[M + 1];
-        for (int i = 1; i < M + 1; i++) {
-            car[i] = Integer.parseInt(br.readLine());
+        int[] cars = new int[m + 1];
+        for (int i = 1; i <= m; i++) {
+            cars[i] = Integer.parseInt(br.readLine());
         }
 
-        ParkingLot parkingLot = new ParkingLot(N);
-        int ans = 0;
-        Queue<Integer> waitingList = new LinkedList<>();
-        for (int i = 0; i < 2 * M; i++) {
-            int ops = Integer.parseInt(br.readLine());
-            if (ops > 0) {
-                waitingList.add(ops);
+        int answer = 0;
+        int[] parking = new int[m + 1];
+        Queue<Integer> waiting = new LinkedList<>();
+        for (int i = 0; i < m * 2; i++) {
+            int data = Integer.parseInt(br.readLine());
+
+            if (data > 0) {
+                waiting.add(data);
             } else {
-                ans += parkingLot.out(Math.abs(ops));
+                empty_space.add(parking[data * -1]);
+                parking[data * -1] = 0;
             }
 
-            while (parkingLot.isEmpty() && !waitingList.isEmpty()) {
-                parkingLot.enter(waitingList.poll());
+            while (!waiting.isEmpty() && !empty_space.isEmpty()) {
+                int car = waiting.poll();
+                int spot = empty_space.poll();
+
+                parking[car] = spot;
+                answer += cars[car] * fare[spot];
             }
         }
 
-        System.out.println(ans);
+        System.out.println(answer);
     }
 
 }
