@@ -1,45 +1,45 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) throws NumberFormatException, IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+    static class Member {
+        int idx;
+        int age;
+        String name;
 
+        public Member(int idx, int age, String name) {
+            this.idx = idx;
+            this.age = age;
+            this.name = name;
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
-        Map<Double, String> map = new HashMap<>();
-
+        Member[] members = new Member[n];
+        StringTokenizer st;
         for (int i = 0; i < n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            double key = Integer.parseInt(st.nextToken());
-            String word = st.nextToken();
-            if (map.containsKey(key)) {
-                key += i / 100000d;
-            }
-
-            map.put(key, word);
+            st = new StringTokenizer(br.readLine());
+            int age = Integer.parseInt(st.nextToken());
+            String name = st.nextToken();
+            members[i] = new Member(i, age, name);
         }
-
-        double[] arr = new double[n];
-        int idx = 0;
-        for (Double nKey : map.keySet()) {
-            arr[idx++] = nKey;
-        }
-
-        Arrays.sort(arr);
-
-        for (int i = 0; i < arr.length; i++) {
-            if (map.containsKey(arr[i])) {
-                sb.append((int) arr[i] + " ");
-                sb.append(map.get(arr[i])).append("\n");
+        Arrays.sort(members, new Comparator<Member>() {
+            @Override
+            public int compare(Member o1, Member o2) {
+                if (o1.age == o2.age) {
+                    return Integer.compare(o1.idx, o2.idx);
+                }
+                return Integer.compare(o1.age, o2.age);
             }
+        });
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            sb.append(members[i].age + " " + members[i].name).append("\n");
         }
 
         System.out.println(sb.toString());
