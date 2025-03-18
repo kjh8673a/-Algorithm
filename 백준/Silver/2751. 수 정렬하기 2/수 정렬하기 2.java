@@ -1,44 +1,26 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws NumberFormatException, IOException {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-
         int n = Integer.parseInt(br.readLine());
 
-        int[] arr = new int[n];
-        int max = Integer.MIN_VALUE;
-        int min = Integer.MAX_VALUE;
-        for(int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
-            max = Math.max(max, arr[i]);
-            min = Math.min(min, arr[i]);
+        int[] count = new int[2_000_001];
+        for (int i = 0; i < n; i++) {
+            int num = Integer.parseInt(br.readLine());
+            count[num + 1_000_000]++;
         }
 
-        int[] counting = new int[max+1-min];
-        for(int i = 0; i < arr.length; i++) {
-            counting[arr[i]-min]++;
-        }
-
-        for(int i = 1; i < counting.length; i++) {
-            counting[i] += counting[i-1];
-        }
-
-        int[] result = new int[n];
-        for(int i = arr.length-1; i >= 0; i--) {
-            counting[arr[i]-min]--;
-            result[counting[arr[i]-min]] = arr[i];
-        }
-
-        for(int i = 0; i < result.length; i++) {
-            sb.append(result[i] + "\n");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 2_000_001; i++) {
+            while (count[i] > 0) {
+                sb.append(i - 1_000_000).append("\n");
+                count[i]--;
+            }
         }
 
         System.out.println(sb.toString());
-
     }
 
 }
