@@ -1,38 +1,34 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+
+        int[][] cords = new int[n][2];
+        StringTokenizer st;
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            cords[i][0] = Integer.parseInt(st.nextToken());
+            cords[i][1] = Integer.parseInt(st.nextToken());
+        }
+        Arrays.sort(cords, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o1[0] == o2[0]) {
+                    return Integer.compare(o1[1], o2[1]);
+                }
+                return Integer.compare(o1[0], o2[0]);
+            }
+        });
 
         StringBuilder sb = new StringBuilder();
-
-        int T = Integer.parseInt(br.readLine());
-
-        double[] arr = new double[T];
-
-        for (int i = 0; i < T; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            double a = Integer.parseInt(st.nextToken());
-            double b = Integer.parseInt(st.nextToken());
-
-            arr[i] = a+100000 + (b+100000)/1000000;
-        }
-
-        Arrays.sort(arr);
-
-        for(int i = 0; i < T; i++) {
-            int d = (int) arr[i];
-            int ansA = d - 100000;
-            int ansB = (int) (Math.round((arr[i] - d) * 1000000) - 100000);
-            sb.append(ansA + " " + ansB + "\n");
+        for (int i = 0; i < n; i++) {
+            sb.append(cords[i][0] + " " + cords[i][1]).append("\n");
         }
 
         System.out.println(sb.toString());
-
     }
 
 }
