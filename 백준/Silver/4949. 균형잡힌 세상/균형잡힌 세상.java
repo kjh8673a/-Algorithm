@@ -1,61 +1,48 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Stack;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws NumberFormatException, IOException {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         StringBuilder sb = new StringBuilder();
-
-        while(true) {
+        while (true) {
             String str = br.readLine();
-
-            if(str.equals(".")) {
+            if (str.equals(".")) {
                 break;
             }
 
-            Stack<Integer> stack = new Stack<>();
-
-            boolean balance = true;
-
-            for(int i = 0; i < str.length(); i++) {
-                if(str.charAt(i) == '(') {
-                    stack.add(1);
-                }
-                if(str.charAt(i) == ')') {
-                    if(stack.isEmpty() || stack.peek() != 1) {
-                        balance = false;
+            boolean flag = true;
+            Stack<Character> stack = new Stack<>();
+            for (int i = 0; i < str.length(); i++) {
+                char ch = str.charAt(i);
+                if (ch == '(' || ch == '[') {
+                    stack.add(ch);
+                } else if (ch == ')') {
+                    if (stack.isEmpty() || stack.peek() != '(') {
+                        flag = false;
                         break;
+                    } else {
+                        stack.pop();
                     }
-                    stack.pop();
-                }
-                if(str.charAt(i) == '[') {
-                    stack.add(2);
-                }
-                if(str.charAt(i) == ']') {
-                    if(stack.isEmpty() || stack.peek() != 2) {
-                        balance = false;
+                } else if (ch == ']') {
+                    if (stack.isEmpty() || stack.peek() != '[') {
+                        flag = false;
                         break;
+                    } else {
+                        stack.pop();
                     }
-                    stack.pop();
                 }
             }
 
-            if(stack.size() != 0) {
-                balance = false;
+            if (stack.size() > 0) {
+                flag = false;
             }
 
-            if(balance) {
-                sb.append("yes").append("\n");
-            }else {
-                sb.append("no").append("\n");
-            }
-
+            sb.append(flag ? "yes" : "no").append("\n");
         }
 
         System.out.println(sb.toString());
-
     }
 
 }
