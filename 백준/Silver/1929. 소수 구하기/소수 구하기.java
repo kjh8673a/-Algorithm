@@ -1,33 +1,31 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int m = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
 
-        int m = sc.nextInt();
-        int n = sc.nextInt();
-        sc.close();
-    
-        if(m == 1) {
-            m = 2;
-        }
-
-        int sosu[] = new int[n-m+1];
-
-        for (int i = m; i <= n; i++) {
-            for (int j = 2; j <= Math.sqrt(i); j++) {
-                if(i % j == 0) {
-                    sosu[i-m]++;
-                    break;
+        boolean[] prime = new boolean[n + 1];
+        prime[0] = prime[1] = true;
+        for (int i = 2; i * i <= n; i++) {
+            if (!prime[i]) {
+                for (int j = i * i; j <= n; j += i) {
+                    prime[j] = true;
                 }
             }
         }
 
-        for (int i = 0; i < sosu.length; i++) {
-            if(sosu[i] == 0) {
-                System.out.println(i+m);
+        StringBuilder sb = new StringBuilder();
+        for (int i = m; i <= n; i++) {
+            if (!prime[i]) {
+                sb.append(i).append("\n");
             }
         }
-        
+
+        System.out.println(sb.toString());
     }
+
 }
