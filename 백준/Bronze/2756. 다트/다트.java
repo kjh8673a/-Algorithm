@@ -1,51 +1,55 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int t = sc.nextInt();
-		for(int i = 0; i < t; i++) {
-			int n = 0;
-			int m = 0;
-			for(int j = 0; j < 6; j++) {
-				double x = sc.nextDouble();
-				double y = sc.nextDouble();
-				double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-				if(j < 3) {
-					if(distance <= 3) {
-						n += 100;
-					}else if(distance <= 6) {
-						n += 80;
-					}else if(distance <= 9) {
-						n += 60;
-					}else if(distance <= 12) {
-						n += 40;
-					}else if(distance <= 15) {
-						n += 20;
-					}
-				}else {
-					if(distance <= 3) {
-						m += 100;
-					}else if(distance <= 6) {
-						m += 80;
-					}else if(distance <= 9) {
-						m += 60;
-					}else if(distance <= 12) {
-						m += 40;
-					}else if(distance <= 15) {
-						m += 20;
-					}
-				}
-			}
-			System.out.print("SCORE: " + n + " to " + m + ", ");
-			if(n > m) {
-				System.out.println("PLAYER 1 WINS.");
-			}else if(n < m) {
-				System.out.println("PLAYER 2 WINS.");
-			}else {
-				System.out.println("TIE.");
-			}
-		}
-		sc.close();
-	}
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine());
+
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st;
+        for (int tc = 0; tc < t; tc++) {
+            st = new StringTokenizer(br.readLine());
+
+            int scoreA = calculateScore(st);
+            int scoreB = calculateScore(st);
+
+            sb.append("SCORE: " + scoreA + " to " + scoreB + ", ");
+            if (scoreA > scoreB) {
+                sb.append("PLAYER 1 WINS.");
+            } else if (scoreA < scoreB) {
+                sb.append("PLAYER 2 WINS.");
+            } else {
+                sb.append("TIE.");
+            }
+            sb.append("\n");
+        }
+
+        System.out.println(sb.toString());
+    }
+
+    private static int calculateScore(StringTokenizer st) {
+        int result = 0;
+
+        for (int i = 0; i < 3; i++) {
+            double x = Double.parseDouble(st.nextToken());
+            double y = Double.parseDouble(st.nextToken());
+
+            double distSquare = x * x + y * y;
+            if (distSquare <= 3 * 3) {
+                result += 100;
+            } else if (distSquare <= 6 * 6) {
+                result += 80;
+            } else if (distSquare <= 9 * 9) {
+                result += 60;
+            } else if (distSquare <= 12 * 12) {
+                result += 40;
+            } else if (distSquare <= 15 * 15) {
+                result += 20;
+            }
+        }
+
+        return result;
+    }
+
 }
