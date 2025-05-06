@@ -1,34 +1,31 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-        public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    static int[] alphabet = { 3, 2, 1, 2, 3, 3, 2, 3, 3, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 1, 1, 2, 2, 1 };
 
-        String a = sc.next();
-        String b = sc.next();
-        sc.close();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String a = br.readLine();
+        String b = br.readLine();
 
-        a = a.replaceAll("A|E|F|H|I", "3");
-        a = a.replaceAll("B|D|G|J|K|M|N|P|Q|R|T|X|Y", "2");
-        a = a.replaceAll("C|L|O|S|U|V|W|Z", "1");
-        b = b.replaceAll("A|E|F|H|I", "3");
-        b = b.replaceAll("B|D|G|J|K|M|N|P|Q|R|T|X|Y", "2");
-        b = b.replaceAll("C|L|O|S|U|V|W|Z", "1");
-        
-        String s = "";
-        for(int i = 0; i < a.length(); i++) {
-            s += a.charAt(i);
-            s += b.charAt(i);
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < a.length(); i++) {
+            queue.add(alphabet[a.charAt(i) - 'A']);
+            queue.add(alphabet[b.charAt(i) - 'A']);
         }
 
-        while(s.length() > 2) {
-            String tmp = "";
-            for(int i = 0; i < s.length()-1; i++) {
-                int n = (s.charAt(i)-'0') + (s.charAt(i+1)-'0');
-                tmp += Integer.toString(n%10);
+        while (queue.size() > 2) {
+            int len = queue.size();
+            int prev = queue.poll();
+            for (int i = 1; i < len; i++) {
+                int now = queue.poll();
+                queue.add((prev + now) % 10);
+                prev = now;
             }
-            s = tmp;
         }
-        System.out.println(s);
+
+        System.out.println(queue.poll() + "" + queue.poll());
     }
+
 }
