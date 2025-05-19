@@ -1,32 +1,20 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.io.*;
+import java.util.*;
 
 public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
+        String s = br.readLine();
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
+        TreeSet<String> set = new TreeSet<>();
+        String suffix = "";
+        for(int i = s.length() - 1; i >= 0; i--) {
+            char ch = s.charAt(i);
+            suffix = ch + suffix;
+            set.add(suffix);
+        }
 
-		String str = br.readLine();
-
-		int len = str.length();
-		
-		String[] arr = new String[len];
-
-		for(int i = 0; i < len; i++) {
-			arr[i] = str.substring(i, len);
-		}
-
-		Arrays.sort(arr);
-
-		for(int i = 0; i < len; i++) {
-			sb.append(arr[i]).append("\n");
-		}
-
-		System.out.println(sb.toString());
-		
-	}
+        set.stream().forEach(System.out::println);
+    }
 
 }
